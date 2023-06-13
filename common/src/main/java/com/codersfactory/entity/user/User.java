@@ -1,18 +1,13 @@
 package com.codersfactory.entity.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
+@Table(name = "user_table")
 public class User {
 
     @Id
@@ -22,7 +17,7 @@ public class User {
 
     private String username;
 
-    private String email;
+    private String emailAdress;
 
     @Column(name="first_name")
     private String firstName;

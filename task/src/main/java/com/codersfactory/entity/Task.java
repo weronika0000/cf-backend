@@ -1,25 +1,22 @@
 package com.codersfactory.entity;
 
-import com.codersfactory.entity.user.User;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@AllArgsConstructor
+@Builder
+@Data
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
 public class Task {
     @Id
     @GeneratedValue
     @Column(name="task_id")
-    private long taskId;
+    private Long taskId;
 
     private String title;
 
@@ -34,9 +31,9 @@ public class Task {
     private int numberOfPoints;
 
     @Column(name="difficulty_level")
-    private Enum difficultyLevel;
+    private DifficultyLevel difficultyLevel;
 
-    private User creator;
+    private Long creatorId;
 
     @Column(name="created_at")
     private Instant createdAt;
@@ -49,10 +46,9 @@ public class Task {
 
     private String technology;
 
-    @OneToMany
-    private List<String> tests;
+    private String tests;
 
     @Column(name="if_approved")
-    private boolean ifApproved;
+    private boolean ifApproved = false;
 
 }
