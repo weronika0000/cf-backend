@@ -2,6 +2,7 @@ package com.codersfactory.boundary.mapper;
 
 import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
+import com.codersfactory.boundary.dto.TaskResponseDto;
 import com.codersfactory.entity.Task;
 
 public class TaskMapper {
@@ -35,6 +36,24 @@ public class TaskMapper {
                 .build();
     }
 
+
+    public static TaskResponseDto responseDtoFromTask(Task task) {
+        return TaskResponseDto.builder()
+                .taskId(task.getTaskId())
+                .content(task.getContent())
+                .title(task.getTitle())
+                .exampleSolution(task.getExampleSolution())
+                .hint(task.getHint())
+                .numberOfPoints(task.getNumberOfPoints())
+                .difficultyLevel(task.getDifficultyLevel())
+                .creatorId(task.getCreatorId())
+                .createdAt(task.getCreatedAt())
+                .updatedAt(task.getUpdatedAt())
+                .averageCompletionTime(task.getAverageCompletionTime())
+                .technology(task.getTechnology())
+                .tests(task.getTests())
+                .build();
+    }
 
 
 }
