@@ -49,6 +49,6 @@ public class Task {
     private String tests;
 
     @Column(name="if_approved")
-    private boolean ifApproved = false;
+    private boolean ifApproved;
 
 }
