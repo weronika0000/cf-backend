@@ -1,0 +1,32 @@
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    env:
+      enabled: true
+
+info:
+  application:
+    name: coders-factory
+    description: Coders Factory is a comprehensive programming learning platform aimed at providing hands-on practice for aspiring programmers, particularly junior developers. Our platform focuses on practical learning, allowing users to build their skills through real-world coding scenarios.
+    author: Coders Factory Team
+    version: '@project.version@'
+
+spring:
+  profiles:
+    active: dev
+---
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+---
+spring:
+  jpa:
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
