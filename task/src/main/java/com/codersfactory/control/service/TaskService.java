@@ -2,6 +2,7 @@ package com.codersfactory.control.service;
 
 import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
+import com.codersfactory.boundary.dto.TaskResponseDto;
 import com.codersfactory.entity.Task;
 
 import java.util.List;
@@ -11,9 +12,9 @@ public interface TaskService {
 
     CreateTaskResponseDto createTask(CreateTaskRequestDto taskDto);
 
-//    List<Task> getAllTasks();
-//
-//    Optional<Task> getById (long taskId);
+    //    List<Task> getAllTasks();
+
+    TaskResponseDto getById(long taskId);
 //
 //    Optional<Task> updateTask (Task task);
 //

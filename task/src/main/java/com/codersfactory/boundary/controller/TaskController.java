@@ -2,6 +2,7 @@ package com.codersfactory.boundary.controller;
 
 import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
+import com.codersfactory.boundary.dto.TaskResponseDto;
 import com.codersfactory.control.service.TaskServiceImpl;
 import com.codersfactory.entity.Task;
 import jakarta.validation.Valid;
@@ -27,6 +28,11 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTask);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponseDto> getTask (@PathVariable Long id){
+        TaskResponseDto retrievedTask= taskService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(retrievedTask);
+    }
 //    @PutMapping("/{id}")
 //    public void updateTask(@PathVariable Long id, @Valid  @RequestBody TaskRequestDto taskDto){
 //    }

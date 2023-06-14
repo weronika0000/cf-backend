@@ -2,17 +2,18 @@ package com.codersfactory.control.service;
 
 import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
+import com.codersfactory.boundary.dto.TaskResponseDto;
 import com.codersfactory.control.repository.TaskRepository;
 import com.codersfactory.entity.Task;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
-import static com.codersfactory.boundary.mapper.TaskMapper.createResponseDtoFromTask;
-import static com.codersfactory.boundary.mapper.TaskMapper.createTaskFromRequest;
+import static com.codersfactory.boundary.mapper.TaskMapper.*;
 
 @Service
-public class TaskServiceImpl implements TaskService{
+public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
 
@@ -29,16 +30,19 @@ public class TaskServiceImpl implements TaskService{
         return responseTaskDto;
     }
 
-//    //TODO
+    //    //TODO
 //    @Override
 //    public List<Task> getAllTasks() {
 //        return taskRepository.findAll();
 //    }
-//    //TODO
-//    @Override
-//    public Optional<Task> getById(long taskId) {
-//        return taskRepository.findById(taskId);
-//    }
+    @Override
+    public TaskResponseDto getById(long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> {
+            throw new RuntimeException("The task does not exist");
+        });
+        TaskResponseDto taskResponseDto = responseDtoFromTask(task);
+        return taskResponseDto;
+    }
 //
 //    //TODO
 //    @Override
