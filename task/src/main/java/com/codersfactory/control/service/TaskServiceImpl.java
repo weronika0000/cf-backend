@@ -47,12 +47,21 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() ->
                         new RuntimeException("The task does not exist"));
 
-        Task receivedTask = createTaskFromRequest(taskDto);
-        receivedTask.setUpdatedAt(Instant.now());
-        receivedTask.setAverageCompletionTime(taskFromDatabase.getAverageCompletionTime());
-        receivedTask.setTaskId(taskFromDatabase.getTaskId());
-        receivedTask.setIfApproved(taskFromDatabase.isIfApproved());
-        Task responseTask = taskRepository.save(receivedTask);
+        if (!taskDto.creatorId().equals(taskFromDatabase.getCreatorId())){
+            throw new RuntimeException("This user is not allowed to update this task.");
+        }
+
+       taskFromDatabase.setTitle(taskDto.title());
+       taskFromDatabase.setContent(taskDto.content());
+       taskFromDatabase.setExampleSolution(taskDto.exampleSolution());
+       taskFromDatabase.setHint(taskDto.hint());
+       taskFromDatabase.setNumberOfPoints(taskDto.numberOfPoints());
+       taskFromDatabase.setDifficultyLevel(taskDto.difficultyLevel());
+       taskFromDatabase.setTechnology(taskDto.technology());
+       taskFromDatabase.setTests(taskDto.tests());
+       taskFromDatabase.setUpdatedAt(Instant.now());
+
+        Task responseTask = taskRepository.save(taskFromDatabase);
 
         return responseDtoFromTask(responseTask);
     }
