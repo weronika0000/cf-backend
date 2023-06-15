@@ -11,15 +11,8 @@ import java.util.Optional;
 public interface TaskService {
 
     CreateTaskResponseDto createTask(CreateTaskRequestDto taskDto);
+    TaskResponseDto getById(Long taskId);
+    TaskResponseDto updateTask (Long taskId, CreateTaskRequestDto taskDto);
 
-    //    List<Task> getAllTasks();
-
-    TaskResponseDto getById(long taskId);
-//
-//    Optional<Task> updateTask (Task task);
-//
-//    void removeTask (long taskId);
-//
-//    Optional<Task> approveTask (Task task);
 
 }

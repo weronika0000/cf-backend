@@ -33,13 +33,11 @@ public class TaskController {
         TaskResponseDto retrievedTask= taskService.getById(id);
         return ResponseEntity.status(HttpStatus.OK).body(retrievedTask);
     }
-//    @PutMapping("/{id}")
-//    public void updateTask(@PathVariable Long id, @Valid  @RequestBody TaskRequestDto taskDto){
-//    }
 
-//    @GetMapping
-//    public List<TaskResponseDto> getTasks(){
-//        return null;
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long id, @Valid @RequestBody CreateTaskRequestDto taskDto) {
+        TaskResponseDto updatedTask = taskService.updateTask(id, taskDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedTask);
+    }
 
 }

@@ -26,39 +26,34 @@ public class TaskServiceImpl implements TaskService {
         Task recievedTask = createTaskFromRequest(taskDto);
         recievedTask.setCreatedAt(Instant.now());
         Task responseTask = taskRepository.save(recievedTask);
-        CreateTaskResponseDto responseTaskDto = createResponseDtoFromTask(responseTask);
-        return responseTaskDto;
+
+        return createResponseDtoFromTask(responseTask);
     }
 
-    //    //TODO
-//    @Override
-//    public List<Task> getAllTasks() {
-//        return taskRepository.findAll();
-//    }
     @Override
-    public TaskResponseDto getById(long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> {
-            throw new RuntimeException("The task does not exist");
-        });
-        TaskResponseDto taskResponseDto = responseDtoFromTask(task);
-        return taskResponseDto;
+    public TaskResponseDto getById(Long taskId) {
+        Task task = taskRepository
+                .findById(taskId)
+                .orElseThrow(() ->
+                        new RuntimeException("The task does not exist"));
+
+        return responseDtoFromTask(task);
     }
-//
-//    //TODO
-//    @Override
-//    public Optional<Task> updateTask(Task task) {
-//        return Optional.empty();
-//    }
-//
-//    //TODO
-//    @Override
-//    public void removeTask(long taskId) {
-//
-//    }
-//
-//    //TODO
-//    @Override
-//    public Optional<Task> approveTask(Task task) {
-//        return Optional.empty();
-//    }
+
+    @Override
+    public TaskResponseDto updateTask(Long taskId, CreateTaskRequestDto taskDto) {
+        Task taskFromDatabase = taskRepository
+                .findById(taskId)
+                .orElseThrow(() ->
+                        new RuntimeException("The task does not exist"));
+
+        Task receivedTask = createTaskFromRequest(taskDto);
+        receivedTask.setUpdatedAt(Instant.now());
+        receivedTask.setAverageCompletionTime(taskFromDatabase.getAverageCompletionTime());
+        receivedTask.setTaskId(taskFromDatabase.getTaskId());
+        receivedTask.setIfApproved(taskFromDatabase.isIfApproved());
+        Task responseTask = taskRepository.save(receivedTask);
+
+        return responseDtoFromTask(responseTask);
+    }
 }
