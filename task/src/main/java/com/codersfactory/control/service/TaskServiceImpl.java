@@ -3,6 +3,7 @@ package com.codersfactory.control.service;
 import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
 import com.codersfactory.boundary.dto.TaskResponseDto;
+import com.codersfactory.control.exceptions.TaskNotFoundException;
 import com.codersfactory.control.repository.TaskRepository;
 import com.codersfactory.entity.Task;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() ->
-                        new RuntimeException("The task does not exist"));
+                        new TaskNotFoundException("The task does not exist"));
 
         return responseDtoFromTask(task);
     }
@@ -45,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
         Task taskFromDatabase = taskRepository
                 .findById(taskId)
                 .orElseThrow(() ->
-                        new RuntimeException("The task does not exist"));
+                        new TaskNotFoundException("The task does not exist"));
 
         if (!taskDto.creatorId().equals(taskFromDatabase.getCreatorId())){
             throw new RuntimeException("This user is not allowed to update this task.");
@@ -64,5 +65,14 @@ public class TaskServiceImpl implements TaskService {
         Task responseTask = taskRepository.save(taskFromDatabase);
 
         return responseDtoFromTask(responseTask);
+    }
+
+    @Override
+    public void deleteTaskById(Long taskId) {
+        Task taskFromDatabase = taskRepository
+                .findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException("The task does not exist"));
+
+        taskRepository.delete(taskFromDatabase);
     }
 }
