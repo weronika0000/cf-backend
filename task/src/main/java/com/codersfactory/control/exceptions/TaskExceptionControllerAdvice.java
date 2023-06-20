@@ -59,4 +59,14 @@ public class TaskExceptionControllerAdvice {
         errorResponse.setMessage(ex.getMessage());
         return errorResponse;
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(TaskAssignmentAlreadyExistsException.class)
+    public ErrorResponse handleTaskAssignmentAlreadyExistsException(TaskAssignmentAlreadyExistsException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.name());
+        errorResponse.setMessage(ex.getMessage());
+        return errorResponse;
+    }
 }
