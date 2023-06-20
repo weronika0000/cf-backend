@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -50,5 +51,8 @@ public class Task {
 
     @Column(name="if_approved")
     private boolean ifApproved;
+
+    @OneToMany(mappedBy = "task")
+    private Set <TaskAssignment> taskAssignments;
 
 }
