@@ -4,13 +4,11 @@ import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
 import com.codersfactory.boundary.dto.TaskResponseDto;
 import com.codersfactory.control.service.TaskServiceImpl;
-import com.codersfactory.entity.Task;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.codersfactory.boundary.mapper.TaskMapper.createTaskFromRequest;
 
 @RestController
 @RequestMapping("/api/tasks")

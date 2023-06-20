@@ -3,32 +3,31 @@ package com.codersfactory.control.service;
 import com.codersfactory.boundary.dto.CreateTaskRequestDto;
 import com.codersfactory.boundary.dto.CreateTaskResponseDto;
 import com.codersfactory.boundary.dto.TaskResponseDto;
+import com.codersfactory.boundary.mapper.TaskMapper;
 import com.codersfactory.control.exceptions.TaskNotFoundException;
 import com.codersfactory.control.repository.TaskRepository;
 import com.codersfactory.entity.Task;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Optional;
-
-import static com.codersfactory.boundary.mapper.TaskMapper.*;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
-
-    public TaskServiceImpl(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
+    private final TaskMapper taskMapper;
 
     @Override
     public CreateTaskResponseDto createTask(CreateTaskRequestDto taskDto) {
-        Task recievedTask = createTaskFromRequest(taskDto);
+        Task recievedTask = taskMapper.createTaskFromRequest(taskDto);
         recievedTask.setCreatedAt(Instant.now());
         Task responseTask = taskRepository.save(recievedTask);
 
-        return createResponseDtoFromTask(responseTask);
+        return taskMapper.createResponseDtoFromTask(responseTask);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() ->
                         new TaskNotFoundException("The task does not exist"));
 
-        return responseDtoFromTask(task);
+        return taskMapper.responseDtoFromTask(task);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
 
         Task responseTask = taskRepository.save(taskFromDatabase);
 
-        return responseDtoFromTask(responseTask);
+        return taskMapper.responseDtoFromTask(responseTask);
     }
 
     @Override
