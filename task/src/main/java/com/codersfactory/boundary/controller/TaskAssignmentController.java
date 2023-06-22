@@ -30,4 +30,12 @@ public class TaskAssignmentController {
     public ResponseEntity<CreateTaskAssignmentResponse> getTaskAssignmentById(@PathVariable Long id) {
         return ResponseEntity.ok(taskAssignmentService.getTaskAssignmentById(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CreateTaskAssignmentResponse> updateTaskAssignmentById
+            (@PathVariable Long id,
+             @RequestBody CreateTaskAssignmentRequest createTaskAssignmentRequest) {
+
+        return ResponseEntity.ok(taskAssignmentService.updateTaskAssignmentById(id, createTaskAssignmentRequest));
+    }
 }

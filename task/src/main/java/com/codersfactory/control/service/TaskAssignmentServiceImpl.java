@@ -57,4 +57,24 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService{
 
         return mapper.createResponseFromTaskAssignment(taskAssignment);
     }
+
+    @Override
+    public CreateTaskAssignmentResponse updateTaskAssignmentById
+            (Long id,
+             CreateTaskAssignmentRequest createTaskAssignmentRequest) {
+
+        TaskAssignment taskAssignment = taskAssignmentRepository
+                .findById(id)
+                .orElseThrow(() -> new TaskNotFoundException(id));
+
+        Task task = taskRepository
+                .findById(createTaskAssignmentRequest.taskId())
+                .orElseThrow(() -> new TaskNotFoundException(createTaskAssignmentRequest.taskId()));
+
+        taskAssignment.setTask(task);
+
+        TaskAssignment savedTaskAssignment = taskAssignmentRepository.save(taskAssignment);
+
+        return mapper.createResponseFromTaskAssignment(savedTaskAssignment);
+    }
 }
