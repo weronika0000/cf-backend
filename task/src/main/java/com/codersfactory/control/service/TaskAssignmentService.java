@@ -10,5 +10,5 @@ public interface TaskAssignmentService {
     CreateTaskAssignmentResponse createTaskAssignment
             (CreateTaskAssignmentRequest createTaskAssignmentRequest);
 
-
+    CreateTaskAssignmentResponse getTaskAssignmentById(Long id);
 }

@@ -5,6 +5,7 @@ import com.codersfactory.boundary.dto.CreateTaskAssignmentResponse;
 import com.codersfactory.control.service.TaskAssignmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,4 +25,10 @@ public class TaskAssignmentController {
 
         return ResponseEntity.ok(taskAssignmentService.createTaskAssignment(createTaskAssignmentRequest));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CreateTaskAssignmentResponse> getTaskAssignmentById(@PathVariable Long id) {
+        return ResponseEntity.ok(taskAssignmentService.getTaskAssignmentById(id));
+    }
+
 }
