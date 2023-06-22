@@ -41,6 +41,45 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+
+    public TaskResponseDto getById(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> {
+            throw new RuntimeException("The task does not exist");
+        });
+        TaskResponseDto taskResponseDto = responseDtoFromTask(task);
+        return taskResponseDto;
+    }
+
+    //    //TODO
+    @Override
+    public TaskResponseDto updateTask(Long taskId, CreateTaskRequestDto taskDto) {
+        Task taskFromDatabase = taskRepository.findById(taskId).orElseThrow(() -> {
+            throw new RuntimeException("The task does not exist");
+        });
+
+        Task receivedTask = createTaskFromRequest(taskDto);
+        receivedTask.setUpdatedAt(Instant.now());
+        receivedTask.setAverageCompletionTime(taskFromDatabase.getAverageCompletionTime());
+        receivedTask.setTaskId(taskFromDatabase.getTaskId());
+        receivedTask.setIfApproved(taskFromDatabase.isIfApproved());
+        Task responseTask = taskRepository.save(receivedTask);
+        TaskResponseDto taskResponseDto = responseDtoFromTask(responseTask);
+
+        return taskResponseDto;
+    }
+
+//    //TODO
+//    @Override
+//    public void removeTask(long taskId) {
+//
+//    }
+//
+//    //TODO
+//    @Override
+//    public Optional<Task> approveTask(Task task) {
+//        return Optional.empty();
+//    }
+
     public TaskResponseDto updateTask(Long taskId, CreateTaskRequestDto taskDto) {
         Task taskFromDatabase = taskRepository
                 .findById(taskId)
@@ -74,4 +113,5 @@ public class TaskServiceImpl implements TaskService {
 
         taskRepository.delete(taskFromDatabase);
     }
+
 }

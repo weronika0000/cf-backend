@@ -54,5 +54,4 @@ public class Task {
 
     @OneToMany(mappedBy = "task")
     private Set <TaskAssignment> taskAssignments;
-
 }
