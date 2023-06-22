@@ -6,16 +6,14 @@ import com.codersfactory.entity.Task;
 import com.codersfactory.entity.TaskAssignment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-
 
 @Mapper(componentModel = "spring")
 public interface TaskAssignmentMapper {
 
     @Mapping(target = "createdAt", expression = "java(Instant.now())")
     @Mapping(target = "updatedAt", expression = "java(Instant.now())")
-
-    TaskAssignment createTaskAssignmentFromRequest(CreateTaskAssignmentRequest taskAssignment);
+    @Mapping(target = "task", source = "task")
+    TaskAssignment createTaskAssignmentFromRequest(CreateTaskAssignmentRequest taskAssignment, Task task);
 
     @Mapping (target = "taskId", source = "task.taskId")
     CreateTaskAssignmentResponse createResponseFromTaskAssignment(TaskAssignment taskAssignment);

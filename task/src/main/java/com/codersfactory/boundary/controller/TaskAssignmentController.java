@@ -30,5 +30,4 @@ public class TaskAssignmentController {
     public ResponseEntity<CreateTaskAssignmentResponse> getTaskAssignmentById(@PathVariable Long id) {
         return ResponseEntity.ok(taskAssignmentService.getTaskAssignmentById(id));
     }
-
 }

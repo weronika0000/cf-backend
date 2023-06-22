@@ -5,6 +5,7 @@ import com.codersfactory.boundary.dto.CreateTaskResponseDto;
 import com.codersfactory.boundary.dto.TaskResponseDto;
 import com.codersfactory.boundary.mapper.TaskMapper;
 import com.codersfactory.control.exceptions.TaskNotFoundException;
+import com.codersfactory.control.exceptions.UserNotAuthorizedException;
 import com.codersfactory.control.repository.TaskRepository;
 import com.codersfactory.entity.Task;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public CreateTaskResponseDto createTask(CreateTaskRequestDto taskDto) {
         Task recievedTask = taskMapper.createTaskFromRequest(taskDto);
-        recievedTask.setCreatedAt(Instant.now());
+
         Task responseTask = taskRepository.save(recievedTask);
 
         return taskMapper.createResponseDtoFromTask(responseTask);
@@ -35,70 +36,22 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() ->
-                        new TaskNotFoundException("The task does not exist"));
+                        new TaskNotFoundException(taskId));
 
         return taskMapper.responseDtoFromTask(task);
     }
 
     @Override
-
-    public TaskResponseDto getById(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> {
-            throw new RuntimeException("The task does not exist");
-        });
-        TaskResponseDto taskResponseDto = responseDtoFromTask(task);
-        return taskResponseDto;
-    }
-
-    //    //TODO
-    @Override
-    public TaskResponseDto updateTask(Long taskId, CreateTaskRequestDto taskDto) {
-        Task taskFromDatabase = taskRepository.findById(taskId).orElseThrow(() -> {
-            throw new RuntimeException("The task does not exist");
-        });
-
-        Task receivedTask = createTaskFromRequest(taskDto);
-        receivedTask.setUpdatedAt(Instant.now());
-        receivedTask.setAverageCompletionTime(taskFromDatabase.getAverageCompletionTime());
-        receivedTask.setTaskId(taskFromDatabase.getTaskId());
-        receivedTask.setIfApproved(taskFromDatabase.isIfApproved());
-        Task responseTask = taskRepository.save(receivedTask);
-        TaskResponseDto taskResponseDto = responseDtoFromTask(responseTask);
-
-        return taskResponseDto;
-    }
-
-//    //TODO
-//    @Override
-//    public void removeTask(long taskId) {
-//
-//    }
-//
-//    //TODO
-//    @Override
-//    public Optional<Task> approveTask(Task task) {
-//        return Optional.empty();
-//    }
-
     public TaskResponseDto updateTask(Long taskId, CreateTaskRequestDto taskDto) {
         Task taskFromDatabase = taskRepository
                 .findById(taskId)
                 .orElseThrow(() ->
-                        new TaskNotFoundException("The task does not exist"));
+                        new TaskNotFoundException(taskId));
 
         if (!taskDto.creatorId().equals(taskFromDatabase.getCreatorId())){
-            throw new RuntimeException("This user is not allowed to update this task.");
+            throw new UserNotAuthorizedException(taskDto.creatorId());
         }
-
-       taskFromDatabase.setTitle(taskDto.title());
-       taskFromDatabase.setContent(taskDto.content());
-       taskFromDatabase.setExampleSolution(taskDto.exampleSolution());
-       taskFromDatabase.setHint(taskDto.hint());
-       taskFromDatabase.setNumberOfPoints(taskDto.numberOfPoints());
-       taskFromDatabase.setDifficultyLevel(taskDto.difficultyLevel());
-       taskFromDatabase.setTechnology(taskDto.technology());
-       taskFromDatabase.setTests(taskDto.tests());
-       taskFromDatabase.setUpdatedAt(Instant.now());
+        updateTaskFromDto(taskFromDatabase, taskDto);
 
         Task responseTask = taskRepository.save(taskFromDatabase);
 
@@ -109,9 +62,21 @@ public class TaskServiceImpl implements TaskService {
     public void deleteTaskById(Long taskId) {
         Task taskFromDatabase = taskRepository
                 .findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("The task does not exist"));
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         taskRepository.delete(taskFromDatabase);
+    }
+
+    private void updateTaskFromDto(Task taskToUpdate, CreateTaskRequestDto taskDto) {
+        taskToUpdate.setTitle(taskDto.title());
+        taskToUpdate.setContent(taskDto.content());
+        taskToUpdate.setExampleSolution(taskDto.exampleSolution());
+        taskToUpdate.setHint(taskDto.hint());
+        taskToUpdate.setNumberOfPoints(taskDto.numberOfPoints());
+        taskToUpdate.setDifficultyLevel(taskDto.difficultyLevel());
+        taskToUpdate.setTechnology(taskDto.technology());
+        taskToUpdate.setTests(taskDto.tests());
+        taskToUpdate.setUpdatedAt(Instant.now());
     }
 
 }

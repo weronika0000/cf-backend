@@ -26,23 +26,23 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService{
             (CreateTaskAssignmentRequest createTaskAssignmentRequest) {
 
         Long taskId = createTaskAssignmentRequest.taskId();
-        Long userId = createTaskAssignmentRequest.userId();
 
         Task task = taskRepository
                 .findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id " + taskId + " not found"));
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        Long userId = createTaskAssignmentRequest.userId();
 
         TaskAssignment taskAssignment =
                 taskAssignmentRepository.findByTaskAndUserId(task, userId);
 
-         if (taskAssignment != null) {
+        if (taskAssignment != null) {
                 throw new TaskAssignmentAlreadyExistsException
-                        ("Task assignment with task id '" + taskId + "' and user id '" + userId + "' already exists");
+                        (taskId, userId);
           }
 
         TaskAssignment taskAssignmentToSave
-                = mapper.createTaskAssignmentFromRequest(createTaskAssignmentRequest);
-         taskAssignmentToSave.setTask(task);
+                = mapper.createTaskAssignmentFromRequest(createTaskAssignmentRequest, task);
 
         TaskAssignment savedTaskAssignment = taskAssignmentRepository.save(taskAssignmentToSave);
 
@@ -50,10 +50,10 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService{
     }
   
     @Override
-    public CreateTaskAssignmentResponse getTaskAssignmentById(Long id) {
+    public CreateTaskAssignmentResponse getTaskAssignmentById(Long taskId) {
         TaskAssignment taskAssignment = taskAssignmentRepository
-                .findById(id)
-                .orElseThrow(() -> new TaskNotFoundException("Task assignment with id " + id + " not found"));
+                .findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
 
         return mapper.createResponseFromTaskAssignment(taskAssignment);
     }
