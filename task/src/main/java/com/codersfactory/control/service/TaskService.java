@@ -13,9 +13,5 @@ public interface TaskService {
     CreateTaskResponseDto createTask(CreateTaskRequestDto taskDto);
     TaskResponseDto getById(Long taskId);
     TaskResponseDto updateTask (Long taskId, CreateTaskRequestDto taskDto);
-//
-//    void removeTask (long taskId);
-//
-//    Optional<Task> approveTask (Task task);
-
+    void deleteTaskById(Long taskId);
 }
