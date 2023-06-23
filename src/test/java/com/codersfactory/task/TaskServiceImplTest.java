@@ -77,4 +77,42 @@ class TaskServiceImplTest {
         assertThrows(TaskNotFoundException.class, () -> taskService.getById(taskId));
     }
 
+    @Test
+    void testUpdateTask_WhenValidParametersProvided_ThenReturnTaskResponseDto() {
+        // Arrange
+        Long taskId = 1L;
+        CreateTaskRequestDto taskDto = new CreateTaskRequestDto("Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, "Updated technology", "Updated tests");
+        Task taskFromDatabase = new Task(taskId, "Original Title", "Original Content", "Original Example Solution", "Original Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Original technology", "Original tests", false, null);
+        TaskResponseDto expectedResponseDto = new TaskResponseDto(taskId, "Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Updated technology", "Updated tests");
+
+        when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromDatabase));
+        taskFromDatabase.setTitle(taskDto.title());
+        taskFromDatabase.setContent(taskDto.content());
+        taskFromDatabase.setExampleSolution(taskDto.exampleSolution());
+        taskFromDatabase.setHint(taskDto.hint());
+        taskFromDatabase.setNumberOfPoints(taskDto.numberOfPoints());
+        taskFromDatabase.setDifficultyLevel(taskDto.difficultyLevel());
+        taskFromDatabase.setTechnology(taskDto.technology());
+        taskFromDatabase.setTests(taskDto.tests());
+        taskFromDatabase.setUpdatedAt(Instant.now());
+        when(taskRepository.save(taskFromDatabase)).thenReturn(taskFromDatabase);
+        when(taskMapper.responseDtoFromTask(taskFromDatabase)).thenReturn(expectedResponseDto);
+
+        // Act
+        TaskResponseDto result = taskService.updateTask(taskId, taskDto);
+
+        // Assert
+        assertEquals(expectedResponseDto, result);
+    }
+    @Test
+    void testUpdateTask_WhenTaskDoesNotExist_ThenThrowException() {
+        // Arrange
+        Long taskId = 1L;
+        CreateTaskRequestDto taskDto = new CreateTaskRequestDto("Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, "Updated technology", "Updated tests");
+        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(taskId, taskDto));
+    }
+
 }
