@@ -1,6 +1,7 @@
 package com.codersfactory.task;
 
 
+import com.codersfactory.article.Article;
 import com.codersfactory.common.entity.DifficultyLevel;
 import com.codersfactory.task_assignment.TaskAssignment;
 import jakarta.persistence.*;
@@ -12,7 +13,8 @@ import java.util.Set;
 
 @Entity
 @Builder
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
@@ -56,4 +58,8 @@ public class Task {
 
     @OneToMany(mappedBy = "task")
     private Set <TaskAssignment> taskAssignments;
+
+    @ManyToOne
+    @JoinColumn(name = "article_id")
+    private Article articleId;
 }
