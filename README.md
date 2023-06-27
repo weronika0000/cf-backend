@@ -27,6 +27,3 @@ To access the Coders Factory platform, visit [coders-factory.com](https://www.co
 ## Contact
 
 For any inquiries or support related to the Coders Factory platform, please reach out to our team at [support@coders-factory.com](mailto:support@coders-factory.com).
-## License
-
-This project is licensed under the [xxx]
