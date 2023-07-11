@@ -39,6 +39,6 @@ public class TaskSolution {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    private boolean isFinished;
+    private boolean isCorrect;
 
 }
