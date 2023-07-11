@@ -4,8 +4,11 @@ package com.codersfactory.task;
 import com.codersfactory.article.Article;
 import com.codersfactory.common.entity.DifficultyLevel;
 import com.codersfactory.task_assignment.TaskAssignment;
+import com.codersfactory.task_solution.TaskSolution;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -18,46 +21,29 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
+
     @Id
     @GeneratedValue
-    @Column(name="task_id")
     private Long taskId;
-
     private String title;
-
     private String content;
-
-    @Column(name="example_solution")
     private String exampleSolution;
-
     private String hint;
-
-    @Column(name="number_of_points")
     private int numberOfPoints;
-
-    @Column(name="difficulty_level")
     private DifficultyLevel difficultyLevel;
-
     private Long creatorId;
 
-    @Column(name="created_at")
+    @CreationTimestamp
     private Instant createdAt;
-
-    @Column(name="updated_at")
+    @UpdateTimestamp
     private Instant updatedAt;
-
-    @Column(name="average_completion_time")
     private Duration averageCompletionTime;
-
     private String technology;
-
     private String tests;
-
-    @Column(name="if_approved")
     private boolean ifApproved;
 
     @OneToMany(mappedBy = "task")
-    private Set <TaskAssignment> taskAssignments;
+    private Set <TaskSolution> taskSolution;
 
     @ManyToOne
     @JoinColumn(name = "article_id")

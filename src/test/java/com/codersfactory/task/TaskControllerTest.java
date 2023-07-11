@@ -50,7 +50,7 @@ class TaskControllerTest {
     void getTask_ExistingId_ReturnsTask() {
         // Arrange
         Long taskId = 1L;
-        TaskResponseDto responseDto = new TaskResponseDto(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests");
+        TaskResponseDto responseDto = new TaskResponseDto(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", null, null);
         when(taskService.getById(eq(taskId))).thenReturn(responseDto);
 
         // Act
@@ -78,7 +78,7 @@ class TaskControllerTest {
         // Arrange
         Long taskId = 1L;
         CreateTaskRequestDto requestDto = new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, "Test technology", "Test tests");
-        TaskResponseDto responseDto = new TaskResponseDto(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests");
+        TaskResponseDto responseDto = new TaskResponseDto(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", null, null);
         when(taskService.updateTask(eq(taskId), any(CreateTaskRequestDto.class))).thenReturn(responseDto);
 
         // Act

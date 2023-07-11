@@ -54,7 +54,7 @@ class TaskServiceImplTest {
         // Arrange
         Long taskId = 1L;
         Task taskFromDatabase = new Task(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", false, null, null);
-        TaskResponseDto taskResponseDto = new TaskResponseDto(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests");
+        TaskResponseDto taskResponseDto = new TaskResponseDto(taskId, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", null, null);
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromDatabase));
         when(taskMapper.responseDtoFromTask(taskFromDatabase)).thenReturn(taskResponseDto);
@@ -83,7 +83,7 @@ class TaskServiceImplTest {
         Long taskId = 1L;
         CreateTaskRequestDto taskDto = new CreateTaskRequestDto("Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, "Updated technology", "Updated tests");
         Task taskFromDatabase = new Task(taskId, "Original Title", "Original Content", "Original Example Solution", "Original Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Original technology", "Original tests", false, null, null);
-        TaskResponseDto expectedResponseDto = new TaskResponseDto(taskId, "Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Updated technology", "Updated tests");
+        TaskResponseDto expectedResponseDto = new TaskResponseDto(taskId, "Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, DifficultyLevel.INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Updated technology", "Updated tests", null, null);
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromDatabase));
         taskFromDatabase.setTitle(taskDto.title());

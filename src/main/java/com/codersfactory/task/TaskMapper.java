@@ -8,10 +8,9 @@ import org.mapstruct.Mapping;
 
 import java.time.Instant;
 
-@Mapper(componentModel = "spring", imports = {Instant.class})
+@Mapper(componentModel = "spring")
 public interface TaskMapper {
-    @Mapping (target = "createdAt", expression = "java(Instant.now())")
-    @Mapping (target = "updatedAt", expression = "java(Instant.now())")
+
     Task createTaskFromRequest (CreateTaskRequestDto taskDto);
     CreateTaskResponseDto createResponseDtoFromTask(Task task);
     TaskResponseDto responseDtoFromTask(Task task);
