@@ -1,29 +1,36 @@
-package com.codersfactory.quiz;
+
 
 import com.codersfactory.article.Article;
+import com.codersfactory.quiz.question.Question;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-
-import java.util.Set;
-
-import static jakarta.persistence.GenerationType.IDENTITY;
+import java.time.Instant;
+import java.util.List;
 
 @Entity
 public class Quiz {
 
-    @GeneratedValue(strategy = IDENTITY)
     @Id
     private Long id;
 
-    private Long creatorId;
-
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "article_id")
-    private Article articleId;
+    private String description;
 
-    
-    @ElementCollection
-    private Set<String> tags;
+    @CreationTimestamp
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    private Instant updatedAt;
+
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+    private List<Question> questions;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id")
+    private Article article;
+
 }
