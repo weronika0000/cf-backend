@@ -2,15 +2,13 @@ package com.codersfactory.task_assignment;
 
 import com.codersfactory.task.Task;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +32,5 @@ public class TaskAssignment {
     private Instant createdAt;
 
     private Instant updatedAt;
-
 
 }

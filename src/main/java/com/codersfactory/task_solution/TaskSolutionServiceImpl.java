@@ -1,6 +1,6 @@
 package com.codersfactory.task_solution;
 
-import com.codersfactory.common.exception.TaskNotFoundException;
+import com.codersfactory.task.exception.TaskNotFoundException;
 import com.codersfactory.common.exception.TaskSolutionNotFoundException;
 import com.codersfactory.common.exception.UserNotAuthorizedException;
 import com.codersfactory.task.Task;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class TaskSolutionServiceImpl implements TaskSolutionService{
+public class TaskSolutionServiceImpl implements TaskSolutionService {
     private final TaskSolutionRepository taskSolutionRepository;
     private final TaskRepository taskRepository;
     private final TaskSolutionMapper mapper;
@@ -43,21 +43,21 @@ public class TaskSolutionServiceImpl implements TaskSolutionService{
 
     @Override
     public TaskSolutionResponseDto updateTaskSolutionById(Long taskSolutionId, CreateTaskSolutionRequestDto createTaskSolutionRequestDto) {
-       TaskSolution taskSolution =  taskSolutionRepository
-               .findById(taskSolutionId)
-               .orElseThrow(() -> new TaskSolutionNotFoundException(taskSolutionId));
+        TaskSolution taskSolution = taskSolutionRepository
+                .findById(taskSolutionId)
+                .orElseThrow(() -> new TaskSolutionNotFoundException(taskSolutionId));
 
-       if(createTaskSolutionRequestDto.userId()!=taskSolution.getUserId()){
-           throw new UserNotAuthorizedException(createTaskSolutionRequestDto.userId());
-       }
+        if (!createTaskSolutionRequestDto.userId().equals(taskSolution.getUserId())) {
+            throw new UserNotAuthorizedException(createTaskSolutionRequestDto.userId());
+        }
 
-       if(createTaskSolutionRequestDto.taskId() != taskSolution.getTask().getTaskId()){
-           throw new TaskNotFoundException(createTaskSolutionRequestDto.taskId());
-       }
+        if (!createTaskSolutionRequestDto.taskId().equals(taskSolution.getTask().getTaskId())) {
+            throw new TaskNotFoundException(createTaskSolutionRequestDto.taskId());
+        }
 
-       taskSolution.setUserSolution(createTaskSolutionRequestDto.userSolution());
+        taskSolution.setUserSolution(createTaskSolutionRequestDto.userSolution());
 
-       TaskSolution savedTaskSolution = taskSolutionRepository.save(taskSolution);
+        TaskSolution savedTaskSolution = taskSolutionRepository.save(taskSolution);
         return mapper.createResponseFromTaskSolution(savedTaskSolution);
     }
 

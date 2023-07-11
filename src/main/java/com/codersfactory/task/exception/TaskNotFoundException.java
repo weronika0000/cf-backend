@@ -1,4 +1,4 @@
-package com.codersfactory.common.exception;
+package com.codersfactory.task.exception;
 
 public class TaskNotFoundException extends RuntimeException{
     public TaskNotFoundException(Long taskId) {

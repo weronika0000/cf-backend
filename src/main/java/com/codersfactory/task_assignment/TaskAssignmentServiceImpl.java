@@ -1,8 +1,8 @@
 package com.codersfactory.task_assignment;
 
-import com.codersfactory.common.exception.TaskAssignmentAlreadyExistsException;
-import com.codersfactory.common.exception.TaskAssignmentNotFoundException;
-import com.codersfactory.common.exception.TaskNotFoundException;
+import com.codersfactory.task_assignment.exception.TaskAssignmentAlreadyExistsException;
+import com.codersfactory.task_assignment.exception.TaskAssignmentNotFoundException;
+import com.codersfactory.task.exception.TaskNotFoundException;
 import com.codersfactory.task.TaskRepository;
 import com.codersfactory.task.Task;
 import com.codersfactory.task_assignment.dto.CreateTaskAssignmentRequest;

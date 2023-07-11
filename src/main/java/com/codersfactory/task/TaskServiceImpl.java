@@ -1,6 +1,6 @@
 package com.codersfactory.task;
 
-import com.codersfactory.common.exception.TaskNotFoundException;
+import com.codersfactory.task.exception.TaskNotFoundException;
 import com.codersfactory.common.exception.UserNotAuthorizedException;
 import com.codersfactory.task.dto.CreateTaskRequestDto;
 import com.codersfactory.task.dto.CreateTaskResponseDto;

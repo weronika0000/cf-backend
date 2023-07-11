@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Embeddable
-@Getter @Setter
-@AllArgsConstructor @RequiredArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class QuestionOption {
 
     @Id

@@ -9,9 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TaskAssignmentMapper {
 
-    @Mapping(target = "createdAt", expression = "java(Instant.now())")
-    @Mapping(target = "updatedAt", expression = "java(Instant.now())")
-    @Mapping(target = "task", source = "task")
     TaskAssignment createTaskAssignmentFromRequest(CreateTaskAssignmentRequest taskAssignment, Task task);
 
     @Mapping (target = "taskId", source = "task.taskId")

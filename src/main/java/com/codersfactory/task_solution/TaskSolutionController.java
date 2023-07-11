@@ -13,7 +13,8 @@ public class TaskSolutionController {
     private final TaskSolutionService taskSolutionService;
 
     @PostMapping
-    public ResponseEntity<TaskSolutionResponseDto> createTaskSolution (@RequestBody CreateTaskSolutionRequestDto createTaskSolutionRequestDto){
+    public ResponseEntity<TaskSolutionResponseDto> createTaskSolution
+            (@RequestBody CreateTaskSolutionRequestDto createTaskSolutionRequestDto){
         return ResponseEntity.ok(taskSolutionService.createTaskSolution(createTaskSolutionRequestDto));
     }
 
@@ -23,8 +24,9 @@ public class TaskSolutionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskSolutionResponseDto> updateTaskSolutionById (@PathVariable Long id,
-                                                                           @RequestBody CreateTaskSolutionRequestDto createTaskSolutionRequestDto){
+    public ResponseEntity<TaskSolutionResponseDto> updateTaskSolutionById
+            (@PathVariable Long id,
+             @RequestBody CreateTaskSolutionRequestDto createTaskSolutionRequestDto){
         return ResponseEntity.ok(taskSolutionService.updateTaskSolutionById(id, createTaskSolutionRequestDto));
     }
 

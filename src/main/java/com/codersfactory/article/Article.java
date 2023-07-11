@@ -1,7 +1,6 @@
 package com.codersfactory.article;
 
 import com.codersfactory.common.entity.DifficultyLevel;
-import com.codersfactory.quiz.Quiz;
 import com.codersfactory.task.Task;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Table(name= "articles")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -45,8 +43,8 @@ public class Article {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    @OneToMany(mappedBy = "articleId")
-    private Set<Quiz> quizzes = new HashSet<>();
+//    @OneToMany(mappedBy = "articleId")
+//    private Set<Quiz> quizzes = new HashSet<>();
 
     @OneToMany(mappedBy = "articleId")
     private Set<Task> tasks = new HashSet<>();

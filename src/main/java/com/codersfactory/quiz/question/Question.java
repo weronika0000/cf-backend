@@ -14,8 +14,10 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 
-@Getter @Setter
-@AllArgsConstructor @RequiredArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "question_type")
 @Entity

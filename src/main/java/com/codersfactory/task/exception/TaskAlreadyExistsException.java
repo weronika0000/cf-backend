@@ -1,4 +1,4 @@
-package com.codersfactory.common.exception;
+package com.codersfactory.task.exception;
 
 public class TaskAlreadyExistsException extends RuntimeException {
     public TaskAlreadyExistsException(String message) {

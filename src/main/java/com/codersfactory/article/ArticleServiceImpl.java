@@ -23,7 +23,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setTitle(articleDTO.title());
         article.setContent(articleDTO.content());
         article.setAuthor(articleDTO.author());
-        article.setCreatedAt(Instant.now());
 
         Article savedArticle = articleRepository.save(article);
 

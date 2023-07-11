@@ -20,8 +20,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpec
                 .and(Specs.byTags(articleQuery.getTags())), pageable);
 
     }
-
-
 }
 
 interface Specs {
@@ -48,7 +46,6 @@ interface Specs {
         static Specification<Article> byTags (List <String> tags) {
             return (root, query, builder) -> builder.like(root.get("tags"), "%" + tags + "%");
         }
-
 }
 
 

@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TaskSolutionMapper {
 
-    @Mapping(target= "task", source= "task")
     @Mapping (target = "isCorrect", expression = "java(computeIsCorrect())")
     @Mapping(target = "pointsReceived", expression = "java(computePointsReceived(task, computeIsCorrect()))")
     TaskSolution createTaskSolutionFromRequest(CreateTaskSolutionRequestDto createTaskSolutionRequestDto, Task task);
