@@ -22,13 +22,14 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Entity
 public class Article {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private Long creatorId;
-
     private String title;
+
+    private String author;
 
     private String content;
 
