@@ -1,26 +1,27 @@
 package com.codersfactory.article;
 
 import com.codersfactory.common.entity.DifficultyLevel;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record ArticleDTO (
+public record ArticleDTO
+        (@Min(1)
+         Long id,
 
-        @NotNull(message = "Data not be null")
-        Long id,
+         @NotBlank
+         String title,
 
-    @NotNull(message = "Data not be null")
-    String title,
+         @NotBlank
+         String author,
 
-    @NotNull(message = "Data not be null")
-    String author,
+         @NotBlank
+         String content,
 
-    @NotNull(message = "Data not be null")
-    String content,
+         @NotBlank
+         String technology,
 
-    @NotNull(message = "Data not be null")
-    String technology,
-
-    @NotNull(message = "Data not be null")
-    DifficultyLevel difficultyLevel
-
-) {}
+         @NotNull
+         DifficultyLevel difficultyLevel
+        ) {
+}

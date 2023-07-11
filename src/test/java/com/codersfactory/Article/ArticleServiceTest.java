@@ -3,7 +3,7 @@ package com.codersfactory.Article;
 import com.codersfactory.article.Article;
 import com.codersfactory.article.ArticleDTO;
 import com.codersfactory.article.ArticleRepository;
-import com.codersfactory.article.ArticleService;
+import com.codersfactory.article.ArticleServiceImpl;
 import com.codersfactory.common.exception.ArticleNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,7 +38,7 @@ class ArticleServiceTest {
     private ArticleRepository articleRepository;
 
     @InjectMocks
-    private ArticleService articleService;
+    private ArticleServiceImpl articleService;
 
     @BeforeEach
     void setUp() {
