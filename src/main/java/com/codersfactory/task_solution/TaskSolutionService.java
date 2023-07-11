@@ -7,4 +7,6 @@ import com.codersfactory.task_solution.dto.TaskSolutionResponseDto;
 public interface TaskSolutionService {
 
     TaskSolutionResponseDto createTaskSolution (CreateTaskSolutionRequestDto createTaskSolutionRequestDto);
+
+    TaskSolutionResponseDto getTaskSolutionById(Long taskSolutionId);
 }

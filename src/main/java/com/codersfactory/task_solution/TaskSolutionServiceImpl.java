@@ -1,6 +1,7 @@
 package com.codersfactory.task_solution;
 
 import com.codersfactory.common.exception.TaskNotFoundException;
+import com.codersfactory.common.exception.TaskSolutionNotFoundException;
 import com.codersfactory.task.Task;
 import com.codersfactory.task.TaskRepository;
 import com.codersfactory.task_solution.dto.CreateTaskSolutionRequestDto;
@@ -8,7 +9,6 @@ import com.codersfactory.task_solution.dto.TaskSolutionResponseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Random;
 
 @AllArgsConstructor
 @Service
@@ -28,16 +28,19 @@ public class TaskSolutionServiceImpl implements TaskSolutionService{
 
         TaskSolution taskSolutionToSave = mapper.createTaskSolutionFromRequest(createTaskSolutionRequestDto, task);
 
-        //if (taskSolutionToSave.)
-
         TaskSolution taskSolutionFromDatabase = taskSolutionRepository.save(taskSolutionToSave);
 
-        return mapper.createResponseFromTaskAssignment(taskSolutionFromDatabase);
+        return mapper.createResponseFromTaskSolution(taskSolutionFromDatabase);
     }
 
-    private boolean generateRandomBoolean(){
-        Random random = new Random();
-        return random.nextBoolean();
+    @Override
+    public TaskSolutionResponseDto getTaskSolutionById(Long taskSolutionId) {
+        TaskSolution taskSolution = taskSolutionRepository
+                .findById(taskSolutionId)
+                .orElseThrow(() -> new TaskSolutionNotFoundException(taskSolutionId));
+
+        return mapper.createResponseFromTaskSolution(taskSolution);
     }
+
 
 }

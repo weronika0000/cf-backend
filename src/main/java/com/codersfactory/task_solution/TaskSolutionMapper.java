@@ -15,7 +15,7 @@ public interface TaskSolutionMapper {
     TaskSolution createTaskSolutionFromRequest(CreateTaskSolutionRequestDto createTaskSolutionRequestDto, Task task);
 
     @Mapping (target = "taskId", source = "task.taskId")
-    TaskSolutionResponseDto createResponseFromTaskAssignment (TaskSolution taskSolution);
+    TaskSolutionResponseDto createResponseFromTaskSolution(TaskSolution taskSolution);
 
     default int computePointsReceived(Task task, boolean isCorrect) {
         return isCorrect ? task.getNumberOfPoints() : 0;
@@ -24,6 +24,5 @@ public interface TaskSolutionMapper {
     default boolean computeIsCorrect() {
         return new java.util.Random().nextBoolean();
     }
-
 
 }

@@ -1,6 +1,7 @@
 package com.codersfactory.task_assignment;
 
 import com.codersfactory.common.exception.TaskAssignmentAlreadyExistsException;
+import com.codersfactory.common.exception.TaskAssignmentNotFoundException;
 import com.codersfactory.common.exception.TaskNotFoundException;
 import com.codersfactory.task.TaskRepository;
 import com.codersfactory.task.Task;
@@ -62,7 +63,7 @@ public class TaskAssignmentServiceImpl implements TaskAssignmentService{
 
         TaskAssignment taskAssignment = taskAssignmentRepository
                 .findById(id)
-                .orElseThrow(() -> new TaskNotFoundException(id));
+                .orElseThrow(() -> new TaskAssignmentNotFoundException(id));
 
         Task task = taskRepository
                 .findById(createTaskAssignmentRequest.taskId())
