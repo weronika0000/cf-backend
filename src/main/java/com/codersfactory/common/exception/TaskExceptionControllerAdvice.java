@@ -89,4 +89,14 @@ public class TaskExceptionControllerAdvice {
         return errorResponse;
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserNotAuthorizedException.class)
+    public ErrorResponse handleUserNotAuthorizedException(UserNotAuthorizedException ex) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setCode(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.name());
+        errorResponse.setMessage(ex.getMessage());
+        return errorResponse;
+    }
+
 }

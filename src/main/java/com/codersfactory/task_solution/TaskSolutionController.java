@@ -22,5 +22,11 @@ public class TaskSolutionController {
         return ResponseEntity.ok(taskSolutionService.getTaskSolutionById(id));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskSolutionResponseDto> updateTaskSolutionById (@PathVariable Long id,
+                                                                           @RequestBody CreateTaskSolutionRequestDto createTaskSolutionRequestDto){
+        return ResponseEntity.ok(taskSolutionService.updateTaskSolutionById(id, createTaskSolutionRequestDto));
+    }
+
 
 }

@@ -9,4 +9,6 @@ public interface TaskSolutionService {
     TaskSolutionResponseDto createTaskSolution (CreateTaskSolutionRequestDto createTaskSolutionRequestDto);
 
     TaskSolutionResponseDto getTaskSolutionById(Long taskSolutionId);
+
+    TaskSolutionResponseDto updateTaskSolutionById(Long id, CreateTaskSolutionRequestDto createTaskSolutionRequestDto);
 }
