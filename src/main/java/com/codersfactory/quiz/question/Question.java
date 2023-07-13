@@ -2,6 +2,7 @@ package com.codersfactory.quiz.question;
 
 
 import com.codersfactory.article.Article;
+import com.codersfactory.quiz.Quiz;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,8 +19,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "question_type")
 @Entity
 public class Question {
 
@@ -41,14 +40,15 @@ public class Question {
     private QuestionType questionType;
 
     @ElementCollection
-    @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
+    @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_option_id"))
     private Set<QuestionOption> answers = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "quiz_id")
-//    private Quiz quiz;
+
+    @ManyToOne
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
+
 }

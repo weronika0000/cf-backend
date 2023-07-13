@@ -10,16 +10,16 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, JpaSpecificationExecutor<Article> {
 
-    Page<Article> findAll(ArticleQuery query, Pageable pageable);
+//    Page<Article> findAll(ArticleQuery query, Pageable pageable);
 
-    default Page<Article> search (ArticleQuery articleQuery, Pageable pageable ){
-        return findAll(Specification.where(Specs.byTitle(articleQuery.getTitle()))
-                .and(Specs.byAuthor(articleQuery.getAuthor()))
-                .and(Specs.byTechnology(articleQuery.getTechnology()))
-                .and(Specs.byDifficultyLevel(articleQuery.getDifficultyLevel()))
-                .and(Specs.byTags(articleQuery.getTags())), pageable);
-
-    }
+//    default Page<Article> search (ArticleQuery articleQuery, Pageable pageable ){
+//        return findAll(Specification.where(Specs.byTitle(articleQuery.getTitle()))
+//                .and(Specs.byAuthor(articleQuery.getAuthor()))
+//                .and(Specs.byTechnology(articleQuery.getTechnology()))
+//                .and(Specs.byDifficultyLevel(articleQuery.getDifficultyLevel()))
+//                .and(Specs.byTags(articleQuery.getTags())), pageable);
+//
+//    }
 }
 
 interface Specs {

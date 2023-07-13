@@ -62,12 +62,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
-    @Override
-    public Page<ArticleDTO> searchArticle(ArticleQuery query, Pageable pageable) {
-        return articleRepository.search(query, pageable)
-                .map(this::convertToDTO);
-
-    }
+//    @Override
+//    public Page<ArticleDTO> searchArticle(ArticleQuery query) {
+//        return articleRepository.search(query)
+//                .map(this::convertToDTO);
+//    }
 
     private ArticleDTO convertToDTO(Article article) {
         return new ArticleDTO(

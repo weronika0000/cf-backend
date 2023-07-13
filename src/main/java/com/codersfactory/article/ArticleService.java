@@ -12,5 +12,5 @@ public interface ArticleService {
 
         void deleteArticle(Long id);
 
-        Page<ArticleDTO> searchArticle(ArticleQuery query, Pageable pageable);
+//        Page<ArticleDTO> searchArticle(ArticleQuery query);
 }

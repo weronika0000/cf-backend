@@ -43,25 +43,25 @@ public class ArticleController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<Page<ArticleDTO>> searchArticle(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String author,
-            @RequestParam(required = false) String technology,
-            @RequestParam(required = false) String difficultyLevel,
-            @RequestParam(required = false) List<String> tags,
-            @RequestParam(required = false) @PageableDefault Pageable pageable
-            ) {
-        ArticleQuery query = ArticleQuery.builder()
-                .title(title)
-                .author(author)
-                .technology(technology)
-                .difficultyLevel(difficultyLevel)
-                .tags(tags)
-                .build();
-
-        Page<ArticleDTO> articles = articleService.searchArticle(query, pageable);
-        return new ResponseEntity<>(articles, HttpStatus.OK);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<Page<ArticleDTO>> searchArticle(
+//            @RequestParam(required = false) String title,
+//            @RequestParam(required = false) String author,
+//            @RequestParam(required = false) String technology,
+//            @RequestParam(required = false) String difficultyLevel,
+//            @RequestParam(required = false) List<String> tags,
+//            @RequestParam(required = false) @PageableDefault Pageable pageable
+//            ) {
+//        ArticleQuery query = ArticleQuery.builder()
+//                .title(title)
+//                .author(author)
+//                .technology(technology)
+//                .difficultyLevel(difficultyLevel)
+//                .tags(tags)
+//                .build();
+//
+//        Page<ArticleDTO> articles = articleService.searchArticle(query, pageable);
+//        return new ResponseEntity<>(articles, HttpStatus.OK);
+//    }
 
 }

@@ -1,4 +1,4 @@
-
+package com.codersfactory.quiz;
 
 import com.codersfactory.article.Article;
 import com.codersfactory.quiz.question.Question;
@@ -13,6 +13,7 @@ import java.util.List;
 public class Quiz {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
