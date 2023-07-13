@@ -28,6 +28,14 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
 
+      - name: Build and start database
+        run: | 
+          docker-compose up -d
+
+      - name: Wait for database to start
+        run: |
+          while ! nc -z localhost 5432; do sleep 1; done
+
       - name: Build project
         run: |
           mvn clean install
