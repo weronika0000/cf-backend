@@ -1,12 +1,16 @@
 package com.codersfactory.flashcards;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Flashcard extends CrudEntity<Flashcard>{
 
     @Id
