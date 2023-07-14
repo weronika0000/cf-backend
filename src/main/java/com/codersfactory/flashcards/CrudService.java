@@ -14,4 +14,12 @@ public abstract class CrudService<T extends CrudRepository<A>, A> {
     public A findById(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("No entity with such id"));
     }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
+
+    public A saveEntity(A entity) {
+        return repository.save(entity);
+    }
 }
