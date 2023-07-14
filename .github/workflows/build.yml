@@ -48,6 +48,3 @@ jobs:
         run: |
           mvn surefire-report:report-only
           cat target/site/surefire-report.html
-
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
