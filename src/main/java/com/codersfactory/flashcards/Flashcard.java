@@ -1,17 +1,15 @@
 package com.codersfactory.flashcards;
 
+import com.codersfactory.flashcards.dto.CreateFlashcardDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class Flashcard extends CrudEntity<Flashcard>{
+public class Flashcard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +20,9 @@ public class Flashcard extends CrudEntity<Flashcard>{
     @JoinColumn(name = "flashcardCollection.id")
     private FlashcardCollection flashcardCollection;
 
+    public Flashcard(CreateFlashcardDto dto, FlashcardCollection collection) {
+        this.back = dto.back();
+        this.front = dto.front();
+        this.flashcardCollection = collection;
+    }
 }
