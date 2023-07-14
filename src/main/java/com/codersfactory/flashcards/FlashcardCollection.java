@@ -2,13 +2,14 @@ package com.codersfactory.flashcards;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
-@Table(name = "flashcardcollection")
 public class FlashcardCollection extends CrudEntity<FlashcardCollection>{
 
     @Id
