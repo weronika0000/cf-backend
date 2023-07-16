@@ -1,5 +1,6 @@
 package com.codersfactory.user;
 
+import com.codersfactory.user.dto.UserRegisterDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
@@ -23,4 +24,10 @@ public class User {
     String username;
     String password;
     Roles role;
+
+    public User(UserRegisterDto dto) {
+        this.email = dto.email();
+        this.username = dto.username();
+        this.role = Roles.USER;
+    }
 }

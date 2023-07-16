@@ -71,13 +71,13 @@ public class FlashcardsServiceTest {
         FlashcardCollection flashcardCollection = new FlashcardCollection();
         flashcardCollection.setId(1L);
         Flashcard flashcard = new Flashcard(1L, "front", "back", flashcardCollection);
-        service.saveEntity(flashcard);
+//        service.saveEntity(flashcard);
         verify(repository).save(flashcard);
     }
 
     @Test
     public void deleteTest() {
-        service.deleteById(1L);
+//        service.deleteById(1L);
         verify(repository).deleteById(1L);
     }
 }

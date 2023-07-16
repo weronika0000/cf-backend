@@ -36,7 +36,7 @@ class SecurityConfiguration {
                 .httpBasic(HttpBasicConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
                         .anyRequest().authenticated())
                 .authenticationManager(manager)
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)

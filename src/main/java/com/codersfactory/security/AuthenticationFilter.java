@@ -60,19 +60,15 @@ class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 7200000))
                 .withClaim("Roles", authResult.getAuthorities().stream().map(GrantedAuthority::toString).toList())
                 .sign(Algorithm.HMAC512(SecurityConfiguration.secretKey));
-        System.out.println(1);
-        System.out.println(authResult.getName());
         CustomUserDetails user = (CustomUserDetails) service.loadUserByUsername(authResult.getName());
         UserDto dto = new UserDto(user.getId(),
                 user.getUsername(),
                 user.getAuthorities().stream().map(GrantedAuthority::toString).toList());
-        System.out.println(2);
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
                 Optional.empty(),
                 user.getAuthorities().stream().map(Object::toString).map(SimpleGrantedAuthority::new).toList()
         );
-        System.out.println(3);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         response.setStatus(HttpServletResponse.SC_OK);
         response.addCookie(createCookie(token));
