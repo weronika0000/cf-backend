@@ -50,7 +50,17 @@ public class UserServiceTest {
         User user = service.findByEmail(EMAIL);
 
         assertEquals(testUser, user);
-        assertThrows(UserNotFoundException.class, () -> service.findByEmail("nonexistantemail@example.com"));
+        assertThrows(UserNotFoundException.class, () -> service.findByEmail("nonexistentemail@example.com"));
+    }
+
+    @Test
+    public void findUserByUsernameTest() {
+        when(repository.findUserByUsername(USERNAME)).thenReturn(Optional.ofNullable(testUser));
+
+        User user = service.findByUsername(USERNAME);
+
+        assertEquals(testUser, user);
+        assertThrows(UserNotFoundException.class, () -> service.findByUsername("nonExistentUsername"));
     }
 
     @Test

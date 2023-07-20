@@ -1,12 +1,11 @@
 package com.codersfactory.security;
 
 import com.codersfactory.user.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Value;
+import com.codersfactory.user.UserAuthenticationManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
@@ -20,12 +19,12 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 @EnableWebSecurity
 class SecurityConfiguration {
 
-    private final AuthenticationManager manager;
+    private final UserAuthenticationManager manager;
     private final CustomUserDetailsService service;
 
     static String secretKey = "secret-123";
 
-    SecurityConfiguration(AuthenticationManager manager, CustomUserDetailsService service) {
+    SecurityConfiguration(UserAuthenticationManager manager, CustomUserDetailsService service) {
         this.manager = manager;
         this.service = service;
     }

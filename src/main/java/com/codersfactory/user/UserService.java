@@ -22,6 +22,12 @@ public class UserService {
         );
     }
 
+    public User findByUsername(String username) {
+        return repository.findUserByUsername(username).orElseThrow(
+                UserNotFoundException::new
+        );
+    }
+
     public void registerUser(UserRegisterDto dto) {
         repository.save(createUser(dto));
     }

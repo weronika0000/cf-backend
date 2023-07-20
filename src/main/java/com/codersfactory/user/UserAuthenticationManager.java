@@ -21,7 +21,7 @@ public class UserAuthenticationManager implements AuthenticationManager {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-        UserDetails userDetails =  service.loadUserByUsername(email);
+        UserDetails userDetails = service.loadUserByEmail(email);
         if (passwordEncoder.matches(password, userDetails.getPassword()))
             return new UsernamePasswordAuthenticationToken(
                     userDetails.getUsername(),

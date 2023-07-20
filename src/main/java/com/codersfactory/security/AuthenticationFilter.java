@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.codersfactory.user.CustomUserDetails;
 import com.codersfactory.user.CustomUserDetailsService;
+import com.codersfactory.user.UserAuthenticationManager;
 import com.codersfactory.user.dto.UserDto;
 import com.codersfactory.user.dto.UserLoginDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,15 +13,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -29,10 +27,10 @@ import java.util.Optional;
 
 class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final AuthenticationManager authenticationManager;
+    private final UserAuthenticationManager authenticationManager;
     private final CustomUserDetailsService service;
 
-    AuthenticationFilter(AuthenticationManager authenticationManager, CustomUserDetailsService service) {
+    AuthenticationFilter(UserAuthenticationManager authenticationManager, CustomUserDetailsService service) {
         this.authenticationManager = authenticationManager;
         this.service = service;
     }
@@ -55,13 +53,14 @@ class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse response,
                                             FilterChain chain,
                                             Authentication authResult) throws IOException {
+        CustomUserDetails user = (CustomUserDetails) service.loadUserByUsername(authResult.getName());
         String token = JWT.create()
-                .withSubject(authResult.getName())
+                .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 7200000))
                 .withClaim("Roles", authResult.getAuthorities().stream().map(GrantedAuthority::toString).toList())
                 .sign(Algorithm.HMAC512(SecurityConfiguration.secretKey));
-        CustomUserDetails user = (CustomUserDetails) service.loadUserByUsername(authResult.getName());
         UserDto dto = new UserDto(user.getId(),
+                user.getEmail(),
                 user.getUsername(),
                 user.getAuthorities().stream().map(GrantedAuthority::toString).toList());
         Authentication authentication = new UsernamePasswordAuthenticationToken(
