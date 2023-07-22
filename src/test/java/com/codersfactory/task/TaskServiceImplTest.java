@@ -5,6 +5,7 @@ import com.codersfactory.common.exception.UserNotAuthorizedException;
 import com.codersfactory.task.dto.CreateTaskRequestDto;
 import com.codersfactory.task.dto.CreateTaskResponseDto;
 import com.codersfactory.task.dto.TaskResponseDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -44,6 +45,7 @@ class TaskServiceImplTest {
     @InjectMocks
     private TaskServiceImpl taskService;
 
+    @DisplayName("test createTask: when parameters are valid should return taskResponseDto")
     @Test
     void testCreateTask_whenValidParametersProvided_thenReturnCreateTaskResponseDto() {
         //given
@@ -65,6 +67,7 @@ class TaskServiceImplTest {
         assertEquals(taskResponseDto, result);
     }
 
+    @DisplayName("test getById: when task exists, then return taskResponseDto")
     @Test
     void testGetById_WhenTaskExists_ThenReturnTaskResponseDto() {
         // given
@@ -82,6 +85,7 @@ class TaskServiceImplTest {
         assertEquals(taskResponseDto, result);
     }
 
+    @DisplayName("test getById: when task exists, then throw TaskNotFoundException")
     @Test
     void testGetById_WhenTaskDoesNotExist_ThenThrowException() {
         // given
@@ -90,7 +94,8 @@ class TaskServiceImplTest {
         // when & Assert
         assertThrows(TaskNotFoundException.class, () -> taskService.getById(taskId));
     }
-    //TODO
+
+    @DisplayName("test updateTask: when valid parameters provided, then return updated taskResponseDto")
     @Test
     void testUpdateTask_WhenValidParametersProvided_ThenReturnTaskResponseDto() {
         // given
@@ -117,7 +122,7 @@ class TaskServiceImplTest {
         // then
         assertEquals(expectedResponseDto, result);
     }
-    //TODO
+    @DisplayName("test updateTask: when task does not exist, then throw TaskNotFoundException")
     @Test
     void testUpdateTask_WhenTaskDoesNotExist_ThenThrowException() {
         // given
@@ -128,7 +133,7 @@ class TaskServiceImplTest {
         // when & Assert
         assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(taskId, taskDto));
     }
-
+    @DisplayName("test updateTask: when user not authorized, then throw UserNotAuthorizedException")
     @Test
     void testUpdateTask_WhenUserNotAuthorized_ThenThrowException() {
         // given
@@ -141,7 +146,7 @@ class TaskServiceImplTest {
         // when & Assert
         assertThrows(UserNotAuthorizedException.class, () -> taskService.updateTask(taskId, taskDto));
     }
-
+    @DisplayName("test deleteTaskById: when valid parameters provided, then delete task")
     @Test
     void testDeleteTaskById_whenValidParametersProvided() {
         // given
@@ -155,7 +160,7 @@ class TaskServiceImplTest {
         // then
         verify(taskRepository, times(1)).delete(taskFromDatabase);
     }
-
+    @DisplayName("test deleteTaskById: when task not found, then throw TaskNotFoundException")
     @Test
     void testDeleteTaskById_whenTaskNotFound_ThenThrowException() {
         // given
@@ -166,12 +171,12 @@ class TaskServiceImplTest {
     }
 
 
-    private CreateTaskRequestDto createTestTaskRequestDto(){
+    private CreateTaskRequestDto createTestTaskRequestDto() {
         CreateTaskRequestDto createTaskRequestDto = new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, "Test technology", "Test tests");
         return createTaskRequestDto;
     }
 
-    private Task createTestTask(){
+    private Task createTestTask() {
         return Task.builder()
                 .taskId(null)
                 .title("Test Title")
@@ -190,24 +195,24 @@ class TaskServiceImplTest {
 
     }
 
-    private CreateTaskResponseDto createTestTaskResponseDto(){
+    private CreateTaskResponseDto createTestTaskResponseDto() {
         CreateTaskResponseDto createTaskResponseDto = new CreateTaskResponseDto(1L, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, Instant.now(), "Test technology", "Test tests");
         return createTaskResponseDto;
     }
 
 
-    private TaskResponseDto testTaskResponseDto(){
+    private TaskResponseDto testTaskResponseDto() {
         TaskResponseDto taskResponseDto = new TaskResponseDto(1L, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", null, null);
         return taskResponseDto;
     }
 
 
-    private CreateTaskRequestDto updateTestTaskRequestDto(){
+    private CreateTaskRequestDto updateTestTaskRequestDto() {
         CreateTaskRequestDto updateTaskRequestDto = new CreateTaskRequestDto("Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, INTERMEDIATE, 1L, "Updated technology", "Updated tests");
         return updateTaskRequestDto;
     }
 
-    private TaskResponseDto updateTestTaskResponseDto(){
+    private TaskResponseDto updateTestTaskResponseDto() {
         TaskResponseDto expectedResponseDto = new TaskResponseDto(taskId, "Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Updated technology", "Updated tests", null, null);
         return expectedResponseDto;
     }
