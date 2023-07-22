@@ -37,7 +37,20 @@ class TaskServiceImplTest {
     private static final String TECHNOLOGY ="Test technology";
     private static final String TESTS = "Test tests";
     private static final boolean IF_APPROVED = false;
-    private static final Long taskId = 1L;
+    private static Long taskId = 1L;
+
+     private static final CreateTaskRequestDto CREATE_TASK_REQUEST_DTO =
+             new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, "Test technology", "Test tests");
+    private static final CreateTaskResponseDto CREATE_TASK_RESPONSE_DTO =
+            new CreateTaskResponseDto(1L, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, Instant.now(), "Test technology", "Test tests");
+    private static final TaskResponseDto TASK_RESPONSE_DTO =
+            new TaskResponseDto(1L, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", null, null);
+    private static final CreateTaskRequestDto UPDATED_CREATE_TASK_REQUEST_DTO =
+            new CreateTaskRequestDto("Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, INTERMEDIATE, 1L, "Updated technology", "Updated tests");
+    private TaskResponseDto UPDATED_TASK_RESPONSE_DTO =
+            new TaskResponseDto(taskId, "Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Updated technology", "Updated tests", null, null);
+
+
     @Mock
     TaskRepository taskRepository;
 
@@ -52,21 +65,21 @@ class TaskServiceImplTest {
     void testCreateTask_whenValidParametersProvided_thenReturnCreateTaskResponseDto() {
         //given
 
-        CreateTaskRequestDto createTaskRequestDto = createTestTaskRequestDto();
+       // CreateTaskRequestDto createTaskRequestDto = createTestTaskRequestDto();
         Task taskFromRequest = createTestTask();
         Task taskFromDatabase = createTestTask();
         taskFromDatabase.setTaskId(1L);
-        CreateTaskResponseDto taskResponseDto = createTestTaskResponseDto();
+      //  CreateTaskResponseDto taskResponseDto = createTestTaskResponseDto();
 
-        when(taskMapper.createTaskFromRequest(createTaskRequestDto)).thenReturn(taskFromRequest);
+        when(taskMapper.createTaskFromRequest(CREATE_TASK_REQUEST_DTO)).thenReturn(taskFromRequest);
         when(taskRepository.save(taskFromRequest)).thenReturn(taskFromDatabase);
-        when(taskMapper.createResponseDtoFromTask(taskFromDatabase)).thenReturn(taskResponseDto);
+        when(taskMapper.createResponseDtoFromTask(taskFromDatabase)).thenReturn(CREATE_TASK_RESPONSE_DTO);
 
         //Act
-        CreateTaskResponseDto result = taskService.createTask(createTaskRequestDto);
+        CreateTaskResponseDto result = taskService.createTask(CREATE_TASK_REQUEST_DTO);
 
         //Assert
-        assertEquals(taskResponseDto, result);
+        assertEquals(CREATE_TASK_RESPONSE_DTO, result);
     }
 
     @DisplayName("test getById: when task exists, then return taskResponseDto")
@@ -75,16 +88,15 @@ class TaskServiceImplTest {
         // given
         Task taskFromDatabase = createTestTask();
         taskFromDatabase.setTaskId(taskId);
-        TaskResponseDto taskResponseDto = testTaskResponseDto();
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromDatabase));
-        when(taskMapper.responseDtoFromTask(taskFromDatabase)).thenReturn(taskResponseDto);
+        when(taskMapper.responseDtoFromTask(taskFromDatabase)).thenReturn(TASK_RESPONSE_DTO);
 
         // when
         TaskResponseDto result = taskService.getById(taskId);
 
         // then
-        assertEquals(taskResponseDto, result);
+        assertEquals(TASK_RESPONSE_DTO, result);
     }
 
     @DisplayName("test getById: when task exists, then throw TaskNotFoundException")
@@ -101,52 +113,48 @@ class TaskServiceImplTest {
     @Test
     void testUpdateTask_WhenValidParametersProvided_ThenReturnTaskResponseDto() {
         // given
-        CreateTaskRequestDto taskDto = updateTestTaskRequestDto();
         Task taskFromDatabase = createTestTask();
-        TaskResponseDto expectedResponseDto = updateTestTaskResponseDto();
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromDatabase));
-        taskFromDatabase.setTitle(taskDto.title());
-        taskFromDatabase.setContent(taskDto.content());
-        taskFromDatabase.setExampleSolution(taskDto.exampleSolution());
-        taskFromDatabase.setHint(taskDto.hint());
-        taskFromDatabase.setNumberOfPoints(taskDto.numberOfPoints());
-        taskFromDatabase.setDifficultyLevel(taskDto.difficultyLevel());
-        taskFromDatabase.setTechnology(taskDto.technology());
-        taskFromDatabase.setTests(taskDto.tests());
+        taskFromDatabase.setTitle(UPDATED_CREATE_TASK_REQUEST_DTO.title());
+        taskFromDatabase.setContent(UPDATED_CREATE_TASK_REQUEST_DTO.content());
+        taskFromDatabase.setExampleSolution(UPDATED_CREATE_TASK_REQUEST_DTO.exampleSolution());
+        taskFromDatabase.setHint(UPDATED_CREATE_TASK_REQUEST_DTO.hint());
+        taskFromDatabase.setNumberOfPoints(UPDATED_CREATE_TASK_REQUEST_DTO.numberOfPoints());
+        taskFromDatabase.setDifficultyLevel(UPDATED_CREATE_TASK_REQUEST_DTO.difficultyLevel());
+        taskFromDatabase.setTechnology(UPDATED_CREATE_TASK_REQUEST_DTO.technology());
+        taskFromDatabase.setTests(UPDATED_CREATE_TASK_REQUEST_DTO.tests());
         taskFromDatabase.setUpdatedAt(Instant.now());
         when(taskRepository.save(taskFromDatabase)).thenReturn(taskFromDatabase);
-        when(taskMapper.responseDtoFromTask(taskFromDatabase)).thenReturn(expectedResponseDto);
+        when(taskMapper.responseDtoFromTask(taskFromDatabase)).thenReturn(UPDATED_TASK_RESPONSE_DTO);
 
         // when
-        TaskResponseDto result = taskService.updateTask(taskId, taskDto);
+        TaskResponseDto result = taskService.updateTask(taskId, UPDATED_CREATE_TASK_REQUEST_DTO);
 
         // then
-        assertEquals(expectedResponseDto, result);
+        assertEquals(UPDATED_TASK_RESPONSE_DTO, result);
     }
     @DisplayName("test updateTask: when task does not exist, then throw TaskNotFoundException")
     @Test
     void testUpdateTask_WhenTaskDoesNotExist_ThenThrowException() {
         // given
-        CreateTaskRequestDto taskDto = updateTestTaskRequestDto();
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
 
         // when & Assert
-        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(taskId, taskDto));
+        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(taskId, UPDATED_CREATE_TASK_REQUEST_DTO));
     }
     @DisplayName("test updateTask: when user not authorized, then throw UserNotAuthorizedException")
     @Test
     void testUpdateTask_WhenUserNotAuthorized_ThenThrowException() {
         // given
-        CreateTaskRequestDto taskDto = updateTestTaskRequestDto();
         Task taskFromDatabase = createTestTask();
         taskFromDatabase.setCreatorId(2L);
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(taskFromDatabase));
 
         // when & Assert
-        assertThrows(UserNotAuthorizedException.class, () -> taskService.updateTask(taskId, taskDto));
+        assertThrows(UserNotAuthorizedException.class, () -> taskService.updateTask(taskId, UPDATED_CREATE_TASK_REQUEST_DTO));
     }
     @DisplayName("test deleteTaskById: when valid parameters provided, then delete task")
     @Test
@@ -173,10 +181,7 @@ class TaskServiceImplTest {
     }
 
 
-    private CreateTaskRequestDto createTestTaskRequestDto() {
-        CreateTaskRequestDto createTaskRequestDto = new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, "Test technology", "Test tests");
-        return createTaskRequestDto;
-    }
+
 
     private Task createTestTask() {
         return Task.builder()
@@ -195,28 +200,6 @@ class TaskServiceImplTest {
                 .ifApproved(IF_APPROVED)
                 .build();
 
-    }
-
-    private CreateTaskResponseDto createTestTaskResponseDto() {
-        CreateTaskResponseDto createTaskResponseDto = new CreateTaskResponseDto(1L, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, Instant.now(), "Test technology", "Test tests");
-        return createTaskResponseDto;
-    }
-
-
-    private TaskResponseDto testTaskResponseDto() {
-        TaskResponseDto taskResponseDto = new TaskResponseDto(1L, "Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Test technology", "Test tests", null, null);
-        return taskResponseDto;
-    }
-
-
-    private CreateTaskRequestDto updateTestTaskRequestDto() {
-        CreateTaskRequestDto updateTaskRequestDto = new CreateTaskRequestDto("Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, INTERMEDIATE, 1L, "Updated technology", "Updated tests");
-        return updateTaskRequestDto;
-    }
-
-    private TaskResponseDto updateTestTaskResponseDto() {
-        TaskResponseDto expectedResponseDto = new TaskResponseDto(taskId, "Updated Title", "Updated Content", "Updated Example Solution", "Updated Hint", 5, INTERMEDIATE, 1L, Instant.now(), Instant.now(), null, "Updated technology", "Updated tests", null, null);
-        return expectedResponseDto;
     }
 
 }
