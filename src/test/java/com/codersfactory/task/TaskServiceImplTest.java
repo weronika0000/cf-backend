@@ -1,5 +1,6 @@
 package com.codersfactory.task;
 
+import com.codersfactory.common.entity.DifficultyLevel;
 import com.codersfactory.task.exception.TaskNotFoundException;
 import com.codersfactory.common.exception.UserNotAuthorizedException;
 import com.codersfactory.task.dto.CreateTaskRequestDto;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Optional;
 
@@ -21,20 +23,20 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TaskServiceImplTest {
-//    CreateTaskRequestDto CreateTaskRequestDto = new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, "Test technology", "Test tests");
-//    private static final String title = "Test Title";
-//    private static final String content = "Test Content";
-//    private static final String exampleSolution = "Test Example Solution";
-//    private static final String hint = "Test Hint";
-//
-//    private static final int numberOfPoints = 5;
-//
-//    private static final DifficultyLevel difficultyLevel = INTERMEDIATE;
-//    private static final Long creatorID = 1L;
-//
-//    private static final String technology ="Test technology";
-//    private static final String tests = "Test tests";
+    CreateTaskRequestDto CreateTaskRequestDto = new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, "Test technology", "Test tests");
+    private static final String TITLE= "Test Title";
+    private static final String CONTENT  = "Test Content";
+    private static final String EXAMPLE_SOLUTION = "Test Example Solution";
+    private static final String HINT = "Test Hint";
+    private static final int NUMBER_OF_POINTS = 5;
+    private static final DifficultyLevel DIFFICULTY_LEVEL = INTERMEDIATE;
+    private static final Long CREATOR_ID = 1L;
+    private static final Instant CREATED_AT= Instant.now();
 
+    private static final  Duration AVERAGE_COMPLETION_TIME = null;
+    private static final String TECHNOLOGY ="Test technology";
+    private static final String TESTS = "Test tests";
+    private static final boolean IF_APPROVED = false;
     private static final Long taskId = 1L;
     @Mock
     TaskRepository taskRepository;
@@ -179,18 +181,18 @@ class TaskServiceImplTest {
     private Task createTestTask() {
         return Task.builder()
                 .taskId(null)
-                .title("Test Title")
-                .content("Test Content")
-                .exampleSolution("Test Example Solution")
-                .hint("Test Hint")
-                .numberOfPoints(5)
+                .title(TITLE)
+                .content(CONTENT)
+                .exampleSolution(EXAMPLE_SOLUTION)
+                .hint(HINT)
+                .numberOfPoints(NUMBER_OF_POINTS)
                 .difficultyLevel(INTERMEDIATE)
-                .creatorId(1L)
+                .creatorId(CREATOR_ID)
                 .createdAt(Instant.now())
-                .averageCompletionTime(null)
-                .technology("Test technology")
-                .tests("Test tests")
-                .ifApproved(false)
+                .averageCompletionTime(AVERAGE_COMPLETION_TIME)
+                .technology(TECHNOLOGY)
+                .tests(TESTS)
+                .ifApproved(IF_APPROVED)
                 .build();
 
     }
