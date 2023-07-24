@@ -2,6 +2,8 @@ package com.codersfactory.flashcards;
 
 import com.codersfactory.flashcards.dto.CreateFlashcardDto;
 import com.codersfactory.flashcards.dto.FlashcardDto;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,60 +26,67 @@ public class FlashcardsServiceTest {
     @InjectMocks
     FlashcardsService service;
 
+    private static final long ID_1L = 1L;
+    private static final String BACK = "back";
+    private static final String FRONT = "front";
+    private FlashcardCollection collection;
+    private Flashcard flashcard;
+
+    @BeforeEach
+    @DisplayName("Should create objects properly")
+    public void createMockEntities() {
+        collection = new FlashcardCollection();
+        collection.setId(ID_1L);
+        flashcard = new Flashcard(ID_1L, FRONT, BACK, collection);
+    }
     @Test
-    public void setupTest() {
+    @DisplayName("Should initialize mock objects properly")
+    public void shouldVerifyMockObjectsNotNull() {
         assertNotNull(repository);
         assertNotNull(service);
         assertNotNull(collectionsService);
+        assertNotNull(collection);
+        assertNotNull(flashcard);
     }
 
     @Test
     public void mapDtoTest() {
-        FlashcardCollection collection = new FlashcardCollection();
         when(collectionsService.findById(1L)).thenReturn(collection);
-        Flashcard flashcard = service.mapDto(new CreateFlashcardDto("front", "back", 1L));
+        Flashcard mappedFlashcard = service.mapDto(new CreateFlashcardDto(FRONT, BACK, ID_1L));
 
-        assertEquals("front", flashcard.getFront());
-        assertEquals("back", flashcard.getBack());
-        assertEquals(collection, flashcard.getFlashcardCollection());
+        assertEquals(FRONT, mappedFlashcard.getFront());
+        assertEquals(BACK, mappedFlashcard.getBack());
+        assertEquals(collection, mappedFlashcard.getFlashcardCollection());
     }
 
     @Test
     public void toDtoTest() {
-        FlashcardCollection flashcardCollection = new FlashcardCollection();
-        flashcardCollection.setId(1L);
-        FlashcardDto dto = service.mapEntity(new Flashcard(1L, "front", "back", flashcardCollection));
+        FlashcardDto flashcardDTO = service.mapEntity(new Flashcard(ID_1L, FRONT, BACK, collection));
 
-        assertEquals(1L, dto.id());
-        assertEquals("front", dto.front());
-        assertEquals("back", dto.back());
-        assertEquals(flashcardCollection.getId(), dto.flashcardCollection());
+        assertEquals(ID_1L, flashcardDTO.id());
+        assertEquals(FRONT, flashcardDTO.front());
+        assertEquals(BACK, flashcardDTO.back());
+        assertEquals(collection.getId(), flashcardDTO.flashcardCollection());
     }
 
     @Test
     public void findByIdTest() {
-        FlashcardCollection flashcardCollection = new FlashcardCollection();
-        flashcardCollection.setId(1L);
-        Flashcard toReturn = new Flashcard(1L, "front", "back", flashcardCollection);
         when(repository.findById(1L))
-                .thenReturn(Optional.of(toReturn));
+                .thenReturn(Optional.of(flashcard));
         Flashcard optFlashcard = service.findById(1L);
-        assertEquals(toReturn, optFlashcard);
+        assertEquals(flashcard, optFlashcard);
         assertThrows(RuntimeException.class, () -> service.findById(2L));
     }
 
     @Test
     public void saveTest() {
-        FlashcardCollection flashcardCollection = new FlashcardCollection();
-        flashcardCollection.setId(1L);
-        Flashcard flashcard = new Flashcard(1L, "front", "back", flashcardCollection);
-//        service.saveEntity(flashcard);
+        service.saveEntity(flashcard);
         verify(repository).save(flashcard);
     }
 
     @Test
     public void deleteTest() {
-//        service.deleteById(1L);
+        service.deleteById(1L);
         verify(repository).deleteById(1L);
     }
 }

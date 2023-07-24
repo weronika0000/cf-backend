@@ -3,6 +3,7 @@ package com.codersfactory.flashcards;
 import com.codersfactory.flashcards.dto.CreateFlashcardCollectionDto;
 import com.codersfactory.flashcards.dto.CreateFlashcardDto;
 import com.codersfactory.flashcards.dto.FlashcardCollectionDto;
+import com.codersfactory.flashcards.exception.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,25 +19,26 @@ public class FlashcardCollectionsService {
     }
 
     FlashcardCollection findById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(FlashcardCollection.class, id));
     }
 
-    FlashcardCollection mapDto(CreateFlashcardCollectionDto dto) {
+    FlashcardCollection mapDTO(CreateFlashcardCollectionDto dto) {
         return mapper.collectionToEntity(dto);
     }
 
-    FlashcardCollectionDto toDto(FlashcardCollection collection) {
+    FlashcardCollectionDto toDTO(FlashcardCollection collection) {
         return mapper.collectionToDto(collection);
     }
 
-    public FlashcardCollection saveByDto(CreateFlashcardCollectionDto dto) {
-        return repository.save(mapDto(dto));
+    public FlashcardCollection saveByDTO(CreateFlashcardCollectionDto dto) {
+        return repository.save(mapDTO(dto));
     }
 
     public FlashcardCollectionDto addCards(Long id, List<CreateFlashcardDto> flashcards) {
-        FlashcardCollection collection = repository.findById(id).orElseThrow();
+        FlashcardCollection collection = findById(id);
         List<Flashcard> cards = flashcards.stream().map(card -> new Flashcard(card, collection)).toList();
         cards.forEach(collection::addCard);
-        return toDto(repository.save(collection));
+        return toDTO(repository.save(collection));
     }
 }

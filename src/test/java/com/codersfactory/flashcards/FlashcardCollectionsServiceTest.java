@@ -2,6 +2,7 @@ package com.codersfactory.flashcards;
 
 import com.codersfactory.flashcards.dto.CreateFlashcardCollectionDto;
 import com.codersfactory.flashcards.dto.FlashcardCollectionDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +22,8 @@ public class FlashcardCollectionsServiceTest {
     FlashcardCollectionsService service;
 
     @Test
-    public void testNotNull() {
+    @DisplayName("Should initialize mock objects properly")
+    public void shouldVerifyMockObjectsNotNull() {
         assertNotNull(repository);
         assertNotNull(service);
     }
@@ -29,7 +31,7 @@ public class FlashcardCollectionsServiceTest {
     @Test
     public void mapDtoTest() {
         CreateFlashcardCollectionDto dto = new CreateFlashcardCollectionDto("title");
-        FlashcardCollection collection = service.mapDto(dto);
+        FlashcardCollection collection = service.mapDTO(dto);
         assertEquals(dto.title(), collection.getTitle());
     }
 
@@ -40,8 +42,7 @@ public class FlashcardCollectionsServiceTest {
         for (int i = 0; i < 10; i++) {
             collection.addCard(new Flashcard(Integer.toUnsignedLong(i), "front"+i, "back"+i, collection));
         }
-        System.out.println("essa");
-        FlashcardCollectionDto check = service.toDto(collection);
+        FlashcardCollectionDto check = service.toDTO(collection);
 
         assertNotNull(check);
         assertEquals(check.title(), collection.getTitle());
