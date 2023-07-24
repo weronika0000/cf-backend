@@ -12,7 +12,6 @@ import java.util.List;
 public class FlashcardCollectionsService {
 
     final FlashcardsMapper mapper = FlashcardsMapper.INSTANCE;
-
     final FlashcardCollectionsRepository repository;
 
     FlashcardCollectionsService(FlashcardCollectionsRepository repository) {
