@@ -1,16 +1,17 @@
 package com.codersfactory.flashcards;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
-public class FlashcardCollection extends CrudEntity<FlashcardCollection>{
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class FlashcardCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
