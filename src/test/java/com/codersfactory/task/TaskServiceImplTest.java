@@ -44,7 +44,6 @@ class TaskServiceImplTest {
     private static final String TESTS = "Test tests";
     private static final boolean IF_APPROVED = false;
     private static final Set<TaskSolution> TASK_SOLUTION = null;
-
     private static final Article ARTICLE_ID = null;
 
     private static final CreateTaskRequestDto CREATE_TASK_REQUEST_DTO =
@@ -61,10 +60,8 @@ class TaskServiceImplTest {
 
     @Mock
     TaskRepository taskRepository;
-
     @Mock
     TaskMapper taskMapper;
-
     @InjectMocks
     private TaskServiceImpl taskService;
 
@@ -72,7 +69,6 @@ class TaskServiceImplTest {
     @Test
     void testCreateTask_whenValidParametersProvided_thenReturnCreateTaskResponseDto() {
         //given
-
         Task taskFromRequest = createTestTask();
         Task taskFromDatabase = createTestTask();
         taskFromDatabase.setTaskId(1L);
@@ -119,7 +115,6 @@ class TaskServiceImplTest {
     void testUpdateTask_WhenValidParametersProvided_ThenReturnTaskResponseDto() {
         // given
         Task taskFromDatabase = createTestTask();
-
         given(taskRepository.findById(taskId)).willReturn(Optional.of(taskFromDatabase));
         taskFromDatabase.setTitle(UPDATED_CREATE_TASK_REQUEST_DTO.title());
         taskFromDatabase.setUpdatedAt(Instant.now());
@@ -136,7 +131,6 @@ class TaskServiceImplTest {
     @Test
     void testUpdateTask_WhenTaskDoesNotExist_ThenThrowException() {
         // given
-
         given(taskRepository.findById(taskId)).willReturn(Optional.empty());
 
         // when & then
@@ -174,10 +168,6 @@ class TaskServiceImplTest {
         // when & then
         assertThrows(TaskNotFoundException.class, () -> taskService.deleteTaskById(taskId));
     }
-
-
-
-
     private Task createTestTask() {
         return Task.builder()
                 .taskId(null)
