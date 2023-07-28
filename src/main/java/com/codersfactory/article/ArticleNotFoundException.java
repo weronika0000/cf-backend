@@ -1,4 +1,4 @@
-package com.codersfactory.common.exception;
+package com.codersfactory.article;
 
 public class ArticleNotFoundException extends RuntimeException {
   

@@ -1,16 +1,18 @@
 package com.codersfactory.flashcards;
 
+import com.codersfactory.user.User;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Data
-public class FlashcardCollection extends CrudEntity<FlashcardCollection>{
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class FlashcardCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +20,8 @@ public class FlashcardCollection extends CrudEntity<FlashcardCollection>{
     private String title;
     @OneToMany(mappedBy = "flashcardCollection", cascade = CascadeType.ALL)
     private Set<Flashcard> flashcards = new HashSet<>();
+    @ManyToOne
+    private User user;
 
     public void addCard(Flashcard flashcard) {
         flashcards.add(flashcard);
