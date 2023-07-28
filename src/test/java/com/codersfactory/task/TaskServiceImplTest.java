@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TaskServiceImplTest {
     CreateTaskRequestDto CreateTaskRequestDto = new CreateTaskRequestDto("Test Title", "Test Content", "Test Example Solution", "Test Hint", 5, INTERMEDIATE, 1L, "Test technology", "Test tests");
-    private static Long taskId = 1L;
+    private static Long TASK_ID = 1L;
     private static final String TITLE= "Test Title";
     private static final String UPDATED_TITLE = "Updated Title";
     private static final String CONTENT  = "Test Content";
@@ -57,7 +57,6 @@ class TaskServiceImplTest {
     private TaskResponseDto UPDATED_TASK_RESPONSE_DTO =
             new TaskResponseDto(CREATOR_ID, UPDATED_TITLE, CONTENT, EXAMPLE_SOLUTION, HINT, NUMBER_OF_POINTS, DIFFICULTY_LEVEL, CREATOR_ID, CREATED_AT, UPDATED_AT, AVERAGE_COMPLETION_TIME, TESTS, TESTS, TASK_SOLUTION, ARTICLE_ID);
 
-
     @Mock
     TaskRepository taskRepository;
     @Mock
@@ -71,7 +70,7 @@ class TaskServiceImplTest {
         //given
         Task taskFromRequest = createTestTask();
         Task taskFromDatabase = createTestTask();
-        taskFromDatabase.setTaskId(1L);
+        taskFromDatabase.setTaskId(TASK_ID);
 
         given(taskMapper.createTaskFromRequest(CREATE_TASK_REQUEST_DTO)).willReturn(taskFromRequest);
         given(taskRepository.save(taskFromRequest)).willReturn(taskFromDatabase);
@@ -89,13 +88,13 @@ class TaskServiceImplTest {
     void testGetById_WhenTaskExists_ThenReturnTaskResponseDto() {
         // given
         Task taskFromDatabase = createTestTask();
-        taskFromDatabase.setTaskId(taskId);
+        taskFromDatabase.setTaskId(TASK_ID);
 
-        given(taskRepository.findById(taskId)).willReturn(Optional.of(taskFromDatabase));
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.of(taskFromDatabase));
         given(taskMapper.responseDtoFromTask(taskFromDatabase)).willReturn(TASK_RESPONSE_DTO);
 
         // when
-        TaskResponseDto result = taskService.getById(taskId);
+        TaskResponseDto result = taskService.getById(TASK_ID);
 
         // then
         assertEquals(TASK_RESPONSE_DTO, result);
@@ -105,9 +104,9 @@ class TaskServiceImplTest {
     @Test
     void testGetById_WhenTaskDoesNotExist_ThenThrowException() {
         // given
-        given(taskRepository.findById(taskId)).willReturn(Optional.empty());
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.empty());
         // when & then
-        assertThrows(TaskNotFoundException.class, () -> taskService.getById(taskId));
+        assertThrows(TaskNotFoundException.class, () -> taskService.getById(TASK_ID));
     }
 
     @DisplayName("test updateTask: when valid parameters provided, then return updated taskResponseDto")
@@ -115,14 +114,14 @@ class TaskServiceImplTest {
     void testUpdateTask_WhenValidParametersProvided_ThenReturnTaskResponseDto() {
         // given
         Task taskFromDatabase = createTestTask();
-        given(taskRepository.findById(taskId)).willReturn(Optional.of(taskFromDatabase));
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.of(taskFromDatabase));
         taskFromDatabase.setTitle(UPDATED_CREATE_TASK_REQUEST_DTO.title());
-        taskFromDatabase.setUpdatedAt(Instant.now());
+        taskFromDatabase.setUpdatedAt(UPDATED_AT);
         given(taskRepository.save(taskFromDatabase)).willReturn(taskFromDatabase);
         given(taskMapper.responseDtoFromTask(taskFromDatabase)).willReturn(UPDATED_TASK_RESPONSE_DTO);
 
         // when
-        TaskResponseDto result = taskService.updateTask(taskId, UPDATED_CREATE_TASK_REQUEST_DTO);
+        TaskResponseDto result = taskService.updateTask(TASK_ID, UPDATED_CREATE_TASK_REQUEST_DTO);
 
         // then
         assertEquals(UPDATED_TASK_RESPONSE_DTO, result);
@@ -131,10 +130,10 @@ class TaskServiceImplTest {
     @Test
     void testUpdateTask_WhenTaskDoesNotExist_ThenThrowException() {
         // given
-        given(taskRepository.findById(taskId)).willReturn(Optional.empty());
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.empty());
 
         // when & then
-        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(taskId, UPDATED_CREATE_TASK_REQUEST_DTO));
+        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(TASK_ID, UPDATED_CREATE_TASK_REQUEST_DTO));
     }
     @DisplayName("test updateTask: when user not authorized, then throw UserNotAuthorizedException")
     @Test
@@ -143,20 +142,20 @@ class TaskServiceImplTest {
         Task taskFromDatabase = createTestTask();
         taskFromDatabase.setCreatorId(2L);
 
-        given(taskRepository.findById(taskId)).willReturn(Optional.of(taskFromDatabase));
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.of(taskFromDatabase));
 
         // when & Assert
-        assertThrows(UserNotAuthorizedException.class, () -> taskService.updateTask(taskId, UPDATED_CREATE_TASK_REQUEST_DTO));
+        assertThrows(UserNotAuthorizedException.class, () -> taskService.updateTask(TASK_ID, UPDATED_CREATE_TASK_REQUEST_DTO));
     }
     @DisplayName("test deleteTaskById: when valid parameters provided, then delete task")
     @Test
     void testDeleteTaskById_whenValidParametersProvided() {
         // given
         Task taskFromDatabase = createTestTask();
-        given(taskRepository.findById(taskId)).willReturn(Optional.of(taskFromDatabase));
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.of(taskFromDatabase));
 
         // when
-        taskService.deleteTaskById(taskId);
+        taskService.deleteTaskById(TASK_ID);
         // then
         verify(taskRepository, times(1)).delete(taskFromDatabase);
     }
@@ -164,13 +163,13 @@ class TaskServiceImplTest {
     @Test
     void testDeleteTaskById_whenTaskNotFound_ThenThrowException() {
         // given
-        given(taskRepository.findById(taskId)).willReturn(Optional.empty());
+        given(taskRepository.findById(TASK_ID)).willReturn(Optional.empty());
         // when & then
-        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTaskById(taskId));
+        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTaskById(TASK_ID));
     }
     private Task createTestTask() {
         return Task.builder()
-                .taskId(null)
+                .taskId(TASK_ID)
                 .title(TITLE)
                 .content(CONTENT)
                 .exampleSolution(EXAMPLE_SOLUTION)
@@ -178,7 +177,7 @@ class TaskServiceImplTest {
                 .numberOfPoints(NUMBER_OF_POINTS)
                 .difficultyLevel(INTERMEDIATE)
                 .creatorId(CREATOR_ID)
-                .createdAt(Instant.now())
+                .createdAt(CREATED_AT)
                 .averageCompletionTime(AVERAGE_COMPLETION_TIME)
                 .technology(TECHNOLOGY)
                 .tests(TESTS)
