@@ -1,7 +1,6 @@
 package com.codersfactory.task_solution;
 
 import com.codersfactory.task.exception.TaskNotFoundException;
-import com.codersfactory.common.exception.TaskSolutionNotFoundException;
 import com.codersfactory.common.exception.UserNotAuthorizedException;
 import com.codersfactory.task.Task;
 import com.codersfactory.task.TaskRepository;

@@ -9,7 +9,8 @@ import java.util.List;
 
 public record FlashcardCollectionDto(
         @NotNull @Min(1) Long id,
-        @NotNull @NotEmpty @NotBlank String title,
-        @NotNull @NotEmpty List<FlashcardDto> flashcards
+        @NotBlank String title,
+        List<FlashcardDto> flashcards,
+        Long ownerId
 ) {
 }

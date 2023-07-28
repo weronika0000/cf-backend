@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateFlashcardCollectionDto(
-        @NotNull @NotEmpty @NotBlank String title
+        @NotBlank String title
 ) {
 }

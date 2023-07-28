@@ -1,8 +1,5 @@
 package com.codersfactory.article;
 
-import com.codersfactory.common.exception.ArticleNotFoundException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
