@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +33,7 @@ public class UserServiceTest {
     final String EMAIL = "email@example.com";
     final String USERNAME = "username";
     final String PASSWORD = "password";
-    User testUser = new User(ID_1L, EMAIL, USERNAME, PASSWORD, Roles.USER);
+    User testUser = new User(ID_1L, EMAIL, USERNAME, PASSWORD, Roles.USER, new ArrayList<>());
 
     @Test
     @DisplayName("Should initialize mock objects properly")

@@ -1,5 +1,6 @@
 package com.codersfactory.user;
 
+import com.codersfactory.flashcards.FlashcardCollection;
 import com.codersfactory.user.dto.UserRegisterDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -7,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -24,6 +27,8 @@ public class User {
     String username;
     String password;
     Roles role;
+    @OneToMany(mappedBy = "user")
+    List<FlashcardCollection> collections;
 
     public User(UserRegisterDto dto) {
         this.email = dto.email();

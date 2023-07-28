@@ -2,7 +2,10 @@ package com.codersfactory.flashcards;
 
 import com.codersfactory.flashcards.dto.CreateFlashcardDto;
 import com.codersfactory.flashcards.dto.FlashcardDto;
-import org.junit.jupiter.api.BeforeEach;
+import com.codersfactory.flashcards.exception.UnauthorizedEditException;
+import com.codersfactory.user.Roles;
+import com.codersfactory.user.User;
+import org.junit.Before;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,15 +33,16 @@ public class FlashcardsServiceTest {
     private static final long ID_1L = 1L;
     private static final String BACK = "back";
     private static final String FRONT = "front";
-    private FlashcardCollection collection;
-    private Flashcard flashcard;
+    private final User mockUser = new User(1L, "email@e.com", "username", "password", Roles.USER, null);
+    private final FlashcardCollection collection = new FlashcardCollection(ID_1L, "title", new HashSet<>(), mockUser);
+    private final Flashcard flashcard = new Flashcard(ID_1L, FRONT, BACK, collection);;
 
-    @BeforeEach
+
+    @Before
     @DisplayName("Should create objects properly")
     public void createMockEntities() {
-        collection = new FlashcardCollection();
-        collection.setId(ID_1L);
-        flashcard = new Flashcard(ID_1L, FRONT, BACK, collection);
+        collection.setUser(mockUser);
+        collection.addCard(flashcard);
     }
     @Test
     @DisplayName("Should initialize mock objects properly")
@@ -86,7 +91,9 @@ public class FlashcardsServiceTest {
 
     @Test
     public void deleteTest() {
-        service.deleteById(1L);
+        when(repository.findById(1L)).thenReturn(Optional.of(flashcard));
+        service.deleteById(1L, "username");
         verify(repository).deleteById(1L);
+        assertThrows(UnauthorizedEditException.class, () -> service.deleteById(1L, "notCreator"));
     }
 }

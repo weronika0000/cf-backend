@@ -1,5 +1,6 @@
 package com.codersfactory.flashcards;
 
+import com.codersfactory.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,6 +20,8 @@ public class FlashcardCollection {
     private String title;
     @OneToMany(mappedBy = "flashcardCollection", cascade = CascadeType.ALL)
     private Set<Flashcard> flashcards = new HashSet<>();
+    @ManyToOne
+    private User user;
 
     public void addCard(Flashcard flashcard) {
         flashcards.add(flashcard);
